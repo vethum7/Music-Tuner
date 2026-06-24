@@ -3,20 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Free Online Guitar Tuner - Accurate Browser-Based Guitar Tuning Tool</title>
-    <meta name="description" content="Tune your guitar accurately with our free online guitar tuner. Works with any microphone, supports standard and alternative tunings." />
+    <title>Free Online Guitar Tuner - Multi-Instrument Tuner</title>
+    <meta name="description" content="Tune acoustic, electric, bass, classical, 12-string, and baritone guitars. Accurate pitch detection with note lock." />
     <link rel="canonical" href="https://your-domain.com/guitar-tuner" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Free Online Guitar Tuner - Accurate Browser-Based Guitar Tuning Tool" />
-    <meta property="og:description" content="Tune your guitar accurately with our free online guitar tuner. Real-time pitch detection, multiple tuning modes." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://your-domain.com/guitar-tuner" />
-
     <style>
-        /* ============================================================
-                   CSS RESET & VARIABLES
-                   ============================================================ */
+        /* --- CSS RESET & VARIABLES (same as before) --- */
         *,
         *::before,
         *::after {
@@ -38,6 +30,7 @@
             --accent-red: #f87171;
             --accent-yellow: #fbbf24;
             --accent-blue: #60a5fa;
+            --accent-purple: #a78bfa;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             --radius: 20px;
             --radius-sm: 12px;
@@ -77,9 +70,6 @@
             overflow-x: hidden;
         }
 
-        /* ============================================================
-                   APP CONTAINER
-                   ============================================================ */
         .app {
             width: 100%;
             max-width: 720px;
@@ -98,9 +88,6 @@
             transition: background var(--transition), border var(--transition);
         }
 
-        /* ============================================================
-                   AD PLACEHOLDERS
-                   ============================================================ */
         .ad-placeholder {
             background: rgba(255, 255, 255, 0.02);
             border: 1px dashed rgba(255, 255, 255, 0.06);
@@ -117,9 +104,6 @@
             width: 100%;
         }
 
-        /* ============================================================
-                   HEADER
-                   ============================================================ */
         .header {
             display: flex;
             align-items: center;
@@ -182,49 +166,54 @@
             transform: scale(0.95);
         }
 
-        /* ============================================================
-                   START TUNER BUTTON
-                   ============================================================ */
-        .start-tuner-wrap {
+        .mic-controls {
             display: flex;
+            gap: 10px;
             justify-content: center;
-            padding: 8px 0 4px;
+            flex-wrap: wrap;
         }
 
-        .btn-start {
+        .btn-mic {
             background: var(--accent-blue);
             color: #0b0e14;
             border: none;
-            padding: 14px 40px;
+            padding: 12px 28px;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             transition: all var(--transition);
             font-family: var(--font);
-            box-shadow: 0 0 30px rgba(96, 165, 250, 0.2);
-            letter-spacing: 0.5px;
+            box-shadow: 0 0 30px rgba(96, 165, 250, 0.15);
+            letter-spacing: 0.3px;
+            min-width: 140px;
         }
 
-        .btn-start:hover {
+        .btn-mic:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 40px rgba(96, 165, 250, 0.35);
+            box-shadow: 0 0 40px rgba(96, 165, 250, 0.25);
         }
 
-        .btn-start:active {
+        .btn-mic:active {
             transform: scale(0.96);
         }
 
-        .btn-start:disabled {
+        .btn-mic.stop {
+            background: var(--accent-red);
+            box-shadow: 0 0 30px rgba(248, 113, 113, 0.15);
+        }
+
+        .btn-mic.stop:hover {
+            box-shadow: 0 0 40px rgba(248, 113, 113, 0.25);
+        }
+
+        .btn-mic:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
-        /* ============================================================
-                   MICROPHONE STATUS
-                   ============================================================ */
         .mic-status {
             display: flex;
             align-items: center;
@@ -260,6 +249,10 @@
         .mic-dot.idle {
             background: var(--accent-yellow);
         }
+        .mic-dot.off {
+            background: var(--text-muted);
+            opacity: 0.4;
+        }
 
         @keyframes pulse-dot {
             0%,
@@ -278,12 +271,46 @@
             white-space: nowrap;
         }
 
-        /* ============================================================
-                   NOTE DISPLAY
-                   ============================================================ */
+        .instrument-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 4px 0;
+        }
+
+        .instrument-btn {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            backdrop-filter: blur(8px);
+            white-space: nowrap;
+        }
+
+        .instrument-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .instrument-btn.active-instr {
+            background: var(--accent-blue);
+            color: #0b0e14;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.2);
+        }
+
         .note-display {
             text-align: center;
             padding: 4px 0 2px;
+            position: relative;
         }
 
         .note-name {
@@ -307,6 +334,24 @@
         }
         .note-name.idle {
             color: var(--text-muted);
+        }
+        .note-name.locked {
+            border-bottom: 3px solid var(--accent-blue);
+            padding-bottom: 2px;
+        }
+
+        .lock-indicator {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 1.2rem;
+            vertical-align: middle;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .lock-indicator.locked {
+            opacity: 1;
+            color: var(--accent-blue);
         }
 
         .note-octave {
@@ -339,9 +384,6 @@
             font-weight: 600;
         }
 
-        /* ============================================================
-                   METER
-                   ============================================================ */
         .meter-wrapper {
             display: flex;
             flex-direction: column;
@@ -411,9 +453,6 @@
             color: var(--text-muted);
         }
 
-        /* ============================================================
-                   STRING VISUALIZATION
-                   ============================================================ */
         .strings-visual {
             display: flex;
             flex-direction: column;
@@ -440,7 +479,7 @@
         .string-row .string-name {
             font-size: 1.1rem;
             font-weight: 600;
-            width: 32px;
+            width: 40px;
             text-align: right;
             color: var(--text-secondary);
             transition: color var(--transition);
@@ -474,7 +513,7 @@
 
         .string-row .string-status {
             font-size: 0.7rem;
-            width: 52px;
+            width: 56px;
             text-align: center;
             color: var(--text-muted);
             font-weight: 500;
@@ -488,9 +527,6 @@
             color: var(--accent-green);
         }
 
-        /* ============================================================
-                   TUNING CONTROLS
-                   ============================================================ */
         .tuning-section {
             display: flex;
             flex-direction: column;
@@ -542,9 +578,6 @@
             box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
         }
 
-        /* ============================================================
-                   REFERENCE TONES
-                   ============================================================ */
         .ref-tones {
             display: flex;
             flex-wrap: wrap;
@@ -596,9 +629,6 @@
             background: #ef4444;
         }
 
-        /* ============================================================
-                   BOTTOM CONTROLS
-                   ============================================================ */
         .bottom-controls {
             display: flex;
             flex-wrap: wrap;
@@ -639,9 +669,6 @@
             border-color: var(--accent-blue);
         }
 
-        /* ============================================================
-                   SETTINGS MODAL
-                   ============================================================ */
         .settings-overlay {
             position: fixed;
             inset: 0;
@@ -769,9 +796,6 @@
             transform: scale(1.01);
         }
 
-        /* ============================================================
-                   RESPONSIVE
-                   ============================================================ */
         @media (max-width: 640px) {
             .app {
                 padding: 16px 12px 20px;
@@ -804,8 +828,8 @@
                 padding: 4px 8px;
             }
             .string-row .string-name {
-                font-size: 0.95rem;
-                width: 28px;
+                font-size: 0.9rem;
+                width: 32px;
             }
             .string-row .string-bar {
                 height: 5px;
@@ -837,9 +861,14 @@
                 font-size: 0.7rem;
                 padding: 6px 12px;
             }
-            .btn-start {
-                padding: 12px 30px;
-                font-size: 1rem;
+            .btn-mic {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                min-width: 120px;
+            }
+            .instrument-btn {
+                font-size: 0.7rem;
+                padding: 5px 10px;
             }
             :root {
                 --meter-width: 280px;
@@ -866,7 +895,7 @@
             }
             .string-row .string-name {
                 font-size: 0.8rem;
-                width: 24px;
+                width: 28px;
             }
             .string-row .string-status {
                 font-size: 0.55rem;
@@ -898,15 +927,17 @@
             .header-title {
                 font-size: 1rem;
             }
-            .btn-start {
-                padding: 8px 20px;
-                font-size: 0.9rem;
+            .btn-mic {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+                min-width: 100px;
+            }
+            .instrument-btn {
+                font-size: 0.65rem;
+                padding: 4px 8px;
             }
         }
 
-        /* ============================================================
-                   UTILITY
-                   ============================================================ */
         .sr-only {
             position: absolute;
             width: 1px;
@@ -926,19 +957,10 @@
                 transition-duration: 0.01ms !important;
             }
         }
-
-        .hidden {
-            display: none !important;
-        }
     </style>
 </head>
 <body>
-
-    <!-- ============================================================
-    APP
-    ============================================================ -->
     <div class="app" role="main" aria-label="Guitar Tuner">
-
         <!-- TOP AD -->
         <div class="ad-placeholder" aria-hidden="true">📢 Ad Placeholder — Top Banner</div>
 
@@ -946,29 +968,40 @@
         <header class="header">
             <div class="header-left">
                 <div class="header-title">🎸 Guitar Tuner</div>
-                <div class="header-sub">Professional Online Tuner</div>
+                <div class="header-sub">Multi‑Instrument Tuner</div>
             </div>
             <div class="header-actions">
-                <button class="btn-icon" id="themeToggle" aria-label="Toggle dark/light mode" title="Theme">🌙</button>
+                <button class="btn-icon" id="themeToggle" aria-label="Toggle theme" title="Theme">🌙</button>
                 <button class="btn-icon" id="settingsToggle" aria-label="Open settings" title="Settings">⚙️</button>
             </div>
         </header>
 
-        <!-- START TUNER -->
-        <div class="start-tuner-wrap">
-            <button class="btn-start" id="startBtn">🎤 Start Tuner</button>
+        <!-- MIC CONTROLS -->
+        <div class="mic-controls">
+            <button class="btn-mic" id="micToggle">🎤 Start Microphone</button>
         </div>
 
         <!-- MIC STATUS -->
         <div class="mic-status" id="micStatus" role="status" aria-live="polite">
             <span class="mic-dot idle" id="micDot"></span>
-            <span class="mic-label" id="micLabel">Click "Start Tuner"</span>
+            <span class="mic-label" id="micLabel">Microphone is off</span>
+        </div>
+
+        <!-- INSTRUMENT SELECTOR -->
+        <div class="instrument-selector" id="instrumentSelector">
+            <button class="instrument-btn active-instr" data-instr="acoustic">🎸 Acoustic</button>
+            <button class="instrument-btn" data-instr="electric">⚡ Electric</button>
+            <button class="instrument-btn" data-instr="bass">🎸 Bass</button>
+            <button class="instrument-btn" data-instr="classical">🎵 Classical</button>
+            <button class="instrument-btn" data-instr="twelve">🔊 12‑String</button>
+            <button class="instrument-btn" data-instr="baritone">🎸 Baritone</button>
         </div>
 
         <!-- NOTE DISPLAY -->
         <div class="note-display">
             <div>
                 <span class="note-name idle" id="noteName">—</span>
+                <span class="lock-indicator" id="lockIndicator">🔓</span>
                 <span class="note-octave" id="noteOctave"></span>
             </div>
             <div class="note-freq"><span id="freqDisplay">0.0</span> Hz</div>
@@ -985,7 +1018,7 @@
         </div>
 
         <!-- STRINGS -->
-        <div class="strings-visual" id="stringsVisual" role="list" aria-label="Guitar strings"></div>
+        <div class="strings-visual" id="stringsVisual" role="list" aria-label="Instrument strings"></div>
 
         <!-- MIDDLE AD -->
         <div class="ad-placeholder" aria-hidden="true">📢 Ad Placeholder — Middle Banner</div>
@@ -994,14 +1027,7 @@
         <div class="tuning-section">
             <div class="tuning-section-header">
                 <label for="tuningSelect">🎛️ Tuning Mode</label>
-                <select class="tuning-select" id="tuningSelect" aria-label="Select tuning">
-                    <option value="standard">Standard (E A D G B E)</option>
-                    <option value="drop-d">Drop D (D A D G B E)</option>
-                    <option value="half-step">Half Step Down (E♭ A♭ D♭ G♭ B♭ E♭)</option>
-                    <option value="full-step">Full Step Down (D G C F A D)</option>
-                    <option value="open-g">Open G (D G D G B D)</option>
-                    <option value="open-d">Open D (D A D F♯ A D)</option>
-                </select>
+                <select class="tuning-select" id="tuningSelect" aria-label="Select tuning"></select>
             </div>
             <div class="ref-tones" id="refTones" role="group" aria-label="Reference tones"></div>
         </div>
@@ -1009,9 +1035,6 @@
         <!-- BOTTOM CONTROLS -->
         <div class="bottom-controls">
             <button class="btn" id="chromaticToggle">🎵 Chromatic</button>
-            <button class="btn" id="bassToggle">🎸 Bass</button>
-            <button class="btn" id="ukuleleToggle">🪕 Ukulele</button>
-            <button class="btn" id="violinToggle">🎻 Violin</button>
             <button class="btn" id="metronomeToggle">⏱️ Metronome</button>
         </div>
 
@@ -1019,9 +1042,7 @@
         <div class="ad-placeholder" aria-hidden="true">📢 Ad Placeholder — Bottom Banner</div>
     </div>
 
-    <!-- ============================================================
-    SETTINGS OVERLAY
-    ============================================================ -->
+    <!-- SETTINGS OVERLAY -->
     <div class="settings-overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-label="Settings">
         <div class="settings-panel">
             <h2>⚙️ Settings</h2>
@@ -1053,21 +1074,20 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    JAVASCRIPT — FULLY WORKING GUITAR TUNER
-    ============================================================ -->
     <script>
         (function() {
             'use strict';
 
             // ============================================================
-            // CONSTANTS
+            // CONSTANTS & TUNINGS
             // ============================================================
             const A4 = 440;
             const SEMITONE = Math.pow(2, 1 / 12);
             const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
+            // All tuning presets
             const TUNINGS = {
+                // 6‑string guitar
                 'standard': [
                     { note: 'E', octave: 2, freq: 82.41 },
                     { note: 'A', octave: 2, freq: 110.00 },
@@ -1115,7 +1135,63 @@
                     { note: 'F#', octave: 3, freq: 185.00 },
                     { note: 'A', octave: 3, freq: 220.00 },
                     { note: 'D', octave: 4, freq: 293.66 }
+                ],
+                // Bass (4‑string)
+                'bass-standard': [
+                    { note: 'E', octave: 1, freq: 41.20 },
+                    { note: 'A', octave: 1, freq: 55.00 },
+                    { note: 'D', octave: 2, freq: 73.42 },
+                    { note: 'G', octave: 2, freq: 98.00 }
+                ],
+                'bass-drop-d': [
+                    { note: 'D', octave: 1, freq: 36.71 },
+                    { note: 'A', octave: 1, freq: 55.00 },
+                    { note: 'D', octave: 2, freq: 73.42 },
+                    { note: 'G', octave: 2, freq: 98.00 }
+                ],
+                // Baritone (6‑string, A–A)
+                'baritone-standard': [
+                    { note: 'A', octave: 1, freq: 55.00 },
+                    { note: 'D', octave: 2, freq: 73.42 },
+                    { note: 'G', octave: 2, freq: 98.00 },
+                    { note: 'C', octave: 3, freq: 130.81 },
+                    { note: 'E', octave: 3, freq: 164.81 },
+                    { note: 'A', octave: 3, freq: 220.00 }
                 ]
+            };
+
+            // Instrument definitions
+            const INSTRUMENTS = {
+                acoustic: {
+                    label: 'Acoustic',
+                    defaultTuning: 'standard',
+                    availableTunings: ['standard', 'drop-d', 'half-step', 'full-step', 'open-g', 'open-d']
+                },
+                electric: {
+                    label: 'Electric',
+                    defaultTuning: 'standard',
+                    availableTunings: ['standard', 'drop-d', 'half-step', 'full-step', 'open-g', 'open-d']
+                },
+                classical: {
+                    label: 'Classical',
+                    defaultTuning: 'standard',
+                    availableTunings: ['standard', 'drop-d', 'half-step', 'full-step', 'open-g', 'open-d']
+                },
+                twelve: {
+                    label: '12‑String',
+                    defaultTuning: 'standard',
+                    availableTunings: ['standard']
+                },
+                bass: {
+                    label: 'Bass',
+                    defaultTuning: 'bass-standard',
+                    availableTunings: ['bass-standard', 'bass-drop-d']
+                },
+                baritone: {
+                    label: 'Baritone',
+                    defaultTuning: 'baritone-standard',
+                    availableTunings: ['baritone-standard']
+                }
             };
 
             // ============================================================
@@ -1125,7 +1201,7 @@
             const $$ = (s) => document.querySelectorAll(s);
 
             const dom = {
-                startBtn: $('#startBtn'),
+                micToggle: $('#micToggle'),
                 micDot: $('#micDot'),
                 micLabel: $('#micLabel'),
                 noteName: $('#noteName'),
@@ -1145,13 +1221,12 @@
                 themeToggleSwitch: $('#themeToggleSwitch'),
                 chromaticToggleSwitch: $('#chromaticToggleSwitch'),
                 chromaticToggle: $('#chromaticToggle'),
-                bassToggle: $('#bassToggle'),
-                ukuleleToggle: $('#ukuleleToggle'),
-                violinToggle: $('#violinToggle'),
                 metronomeToggle: $('#metronomeToggle'),
                 volSlider: $('#volSlider'),
                 themeLabel: $('#themeLabel'),
                 chromaticLabel: $('#chromaticLabel'),
+                lockIndicator: $('#lockIndicator'),
+                instrumentSelector: $('#instrumentSelector'),
             };
 
             // ============================================================
@@ -1161,13 +1236,14 @@
                 isRunning: false,
                 isChromatic: false,
                 isDark: true,
-                currentTuning: 'standard',
-                tuning: TUNINGS['standard'].map(s => ({ ...s })),
+                instrument: 'acoustic',
+                tuningMode: 'standard',
+                tuning: [],
                 detectedFreq: 0,
                 cents: 0,
                 targetFreq: 0,
                 targetStringIndex: -1,
-                stringStatus: new Array(6).fill('idle'),
+                stringStatus: [],
                 isInTune: false,
                 audioCtx: null,
                 analyser: null,
@@ -1175,17 +1251,26 @@
                 source: null,
                 animationId: null,
                 pitchHistory: [],
-                historyMax: 5,
+                historyMax: 12,
                 signalThreshold: 0.012,
                 volume: 0.6,
                 refOsc: null,
                 refGain: null,
                 refTimeout: null,
                 isRefPlaying: false,
+                // Lock
+                freqBuffer: [],
+                noteBuffer: [],
+                lockedNote: null,
+                lockedFreq: 0,
+                lockStableCount: 0,
+                lockThreshold: 5,
+                isLocked: false,
+                _lastFreqTime: 0,
             };
 
             // ============================================================
-            // PITCH DETECTION — YIN
+            // PITCH DETECTION (YIN)
             // ============================================================
             function detectPitch(buffer, sampleRate) {
                 const len = buffer.length;
@@ -1222,7 +1307,6 @@
                 }
                 if (tau < 2) return null;
 
-                // Parabolic interpolation
                 let better = tau;
                 if (tau > 1 && tau < len - 1) {
                     const x0 = cmnd[tau - 1],
@@ -1235,7 +1319,6 @@
                 }
                 const freq = sampleRate / better;
                 if (freq < 40 || freq > 2000) return null;
-                // confidence check
                 const conf = 1 - cmnd[Math.floor(tau)];
                 if (conf < 0.5) return null;
                 return freq;
@@ -1257,8 +1340,13 @@
                 return { name, octave, freq: target, cents };
             }
 
+            function noteToString(note) {
+                if (!note) return null;
+                return note.name + note.octave;
+            }
+
             function closestString(freq, tuning) {
-                if (!freq || !tuning.length) return -1;
+                if (!freq || !tuning || !tuning.length) return -1;
                 let best = -1,
                     bestDiff = Infinity;
                 for (let i = 0; i < tuning.length; i++) {
@@ -1276,9 +1364,9 @@
             }
 
             // ============================================================
-            // AUDIO INIT
+            // AUDIO START / STOP
             // ============================================================
-            async function startAudio() {
+            async function startMicrophone() {
                 if (state.isRunning) return true;
                 try {
                     const ctx = new(window.AudioContext || window.webkitAudioContext)();
@@ -1301,8 +1389,8 @@
 
                     state.isRunning = true;
                     updateMicStatus('active', '🎤 Listening...');
-                    dom.startBtn.disabled = true;
-                    dom.startBtn.textContent = '✅ Tuner Active';
+                    dom.micToggle.textContent = '⏹ Stop Microphone';
+                    dom.micToggle.classList.add('stop');
                     processAudio();
                     return true;
                 } catch (err) {
@@ -1315,9 +1403,51 @@
                         msg = '🔇 No microphone found';
                     }
                     updateMicStatus('error', msg);
-                    dom.startBtn.disabled = false;
-                    dom.startBtn.textContent = '🔄 Retry';
+                    dom.micToggle.textContent = '🔄 Retry';
+                    dom.micToggle.classList.remove('stop');
                     return false;
+                }
+            }
+
+            function stopMicrophone() {
+                if (!state.isRunning) return;
+                state.isRunning = false;
+                if (state.animationId) {
+                    cancelAnimationFrame(state.animationId);
+                    state.animationId = null;
+                }
+                if (state.source) {
+                    try { state.source.disconnect(); } catch (_) {}
+                    state.source = null;
+                }
+                if (state.analyser) {
+                    try { state.analyser.disconnect(); } catch (_) {}
+                    state.analyser = null;
+                }
+                if (state.audioCtx && state.audioCtx.state !== 'closed') {
+                    try { state.audioCtx.close(); } catch (_) {}
+                    state.audioCtx = null;
+                }
+                state.dataArray = null;
+                updateMicStatus('off', 'Microphone off');
+                dom.micToggle.textContent = '🎤 Start Microphone';
+                dom.micToggle.classList.remove('stop');
+                resetTunerDisplay();
+                state.isLocked = false;
+                state.lockedNote = null;
+                state.freqBuffer = [];
+                state.noteBuffer = [];
+                state.pitchHistory = [];
+                dom.lockIndicator.textContent = '🔓';
+                dom.lockIndicator.className = 'lock-indicator';
+                drawMeter(null);
+            }
+
+            function toggleMicrophone() {
+                if (state.isRunning) {
+                    stopMicrophone();
+                } else {
+                    startMicrophone();
                 }
             }
 
@@ -1326,12 +1456,13 @@
                 dot.className = 'mic-dot';
                 if (status === 'active') dot.classList.add('active');
                 else if (status === 'error') dot.classList.add('error');
+                else if (status === 'off') dot.classList.add('off');
                 else dot.classList.add('idle');
                 dom.micLabel.textContent = label;
             }
 
             // ============================================================
-            // MAIN PROCESSING LOOP
+            // MAIN PROCESSING LOOP WITH LOCKING
             // ============================================================
             let lastUIUpdate = 0;
 
@@ -1345,7 +1476,6 @@
                 const data = state.dataArray;
                 analyser.getFloatTimeDomainData(data);
 
-                // RMS
                 let sum = 0;
                 for (let i = 0; i < data.length; i++) sum += data[i] * data[i];
                 const rms = Math.sqrt(sum / data.length);
@@ -1355,36 +1485,149 @@
                     freq = detectPitch(data, state.audioCtx.sampleRate);
                 }
 
-                // Smoothing
                 if (freq && freq > 40 && freq < 2000) {
                     state.pitchHistory.push(freq);
                     if (state.pitchHistory.length > state.historyMax) state.pitchHistory.shift();
                     const sorted = [...state.pitchHistory].sort((a, b) => a - b);
                     const median = sorted[Math.floor(sorted.length / 2)];
                     const variance = sorted.reduce((acc, v) => acc + (v - median) ** 2, 0) / sorted.length;
-                    if (variance < 150) freq = median;
+                    if (variance < 200) freq = median;
                     else freq = null;
                 } else {
                     if (state.pitchHistory.length) state.pitchHistory = [];
                     freq = null;
                 }
 
-                const now = performance.now();
-                if (freq && now - lastUIUpdate > 30) {
-                    lastUIUpdate = now;
-                    updateTuner(freq);
-                } else if (!freq && now - lastUIUpdate > 100) {
-                    lastUIUpdate = now;
+                // Locking logic
+                let currentNoteString = null;
+                let currentFreq = freq;
+                if (freq) {
+                    const note = freqToNote(freq);
+                    if (note) {
+                        currentNoteString = noteToString(note);
+                        currentFreq = note.freq;
+                    }
+                }
+
+                if (currentNoteString) {
+                    state.freqBuffer.push(currentFreq);
+                    state.noteBuffer.push(currentNoteString);
+                } else {
+                    state.freqBuffer.push(null);
+                    state.noteBuffer.push(null);
+                }
+                if (state.freqBuffer.length > 15) state.freqBuffer.shift();
+                if (state.noteBuffer.length > 15) state.noteBuffer.shift();
+
+                const recentNotes = state.noteBuffer.filter(n => n !== null);
+                let stableNoteString = null;
+                if (recentNotes.length >= 4) {
+                    const freqMap = {};
+                    recentNotes.forEach(n => { freqMap[n] = (freqMap[n] || 0) + 1; });
+                    let maxCount = 0;
+                    for (const [note, count] of Object.entries(freqMap)) {
+                        if (count > maxCount) { maxCount = count;
+                            stableNoteString = note; }
+                    }
+                    if (maxCount < 3) stableNoteString = null;
+                }
+
+                if (stableNoteString) {
+                    if (!state.isLocked) {
+                        if (!state.lockedNote) {
+                            const noteObj = freqToNote(state.freqBuffer[state.freqBuffer.length - 1] || 0);
+                            if (noteObj) {
+                                state.lockedNote = noteObj;
+                                state.lockedFreq = noteObj.freq;
+                                state.lockStableCount = 1;
+                            }
+                        } else {
+                            const currentNoteObj = freqToNote(state.freqBuffer[state.freqBuffer.length - 1] || 0);
+                            if (currentNoteObj && noteToString(currentNoteObj) === noteToString(state.lockedNote)) {
+                                state.lockStableCount++;
+                                if (state.lockStableCount >= state.lockThreshold) {
+                                    state.isLocked = true;
+                                    dom.lockIndicator.textContent = '🔒';
+                                    dom.lockIndicator.className = 'lock-indicator locked';
+                                }
+                            } else {
+                                state.lockedNote = null;
+                                state.lockStableCount = 0;
+                                state.isLocked = false;
+                                dom.lockIndicator.textContent = '🔓';
+                                dom.lockIndicator.className = 'lock-indicator';
+                            }
+                        }
+                    } else {
+                        const currentNoteObj = freqToNote(state.freqBuffer[state.freqBuffer.length - 1] || 0);
+                        if (currentNoteObj) {
+                            const semitoneDiff = Math.abs(12 * Math.log2(currentNoteObj.freq / state.lockedNote.freq));
+                            if (semitoneDiff > 0.7) {
+                                state.isLocked = false;
+                                state.lockedNote = null;
+                                state.lockStableCount = 0;
+                                dom.lockIndicator.textContent = '🔓';
+                                dom.lockIndicator.className = 'lock-indicator';
+                                const newNote = freqToNote(currentNoteObj.freq);
+                                if (newNote) {
+                                    state.lockedNote = newNote;
+                                    state.lockedFreq = newNote.freq;
+                                    state.lockStableCount = 1;
+                                }
+                            } else {
+                                // keep locked
+                            }
+                        } else {
+                            if (state.noteBuffer.filter(n => n !== null).length < 3) {
+                                state.isLocked = false;
+                                state.lockedNote = null;
+                                state.lockStableCount = 0;
+                                dom.lockIndicator.textContent = '🔓';
+                                dom.lockIndicator.className = 'lock-indicator';
+                            }
+                        }
+                    }
+                } else {
+                    if (state.isLocked) {
+                        const recentValid = state.noteBuffer.slice(-10).some(n => n !== null);
+                        if (!recentValid) {
+                            state.isLocked = false;
+                            state.lockedNote = null;
+                            state.lockStableCount = 0;
+                            dom.lockIndicator.textContent = '🔓';
+                            dom.lockIndicator.className = 'lock-indicator';
+                        }
+                    }
+                }
+
+                let displayFreq = freq;
+                let displayNote = null;
+                if (state.isLocked && state.lockedNote) {
+                    displayFreq = state.lockedFreq;
+                    displayNote = state.lockedNote;
+                } else if (stableNoteString) {
+                    const latestFreq = state.freqBuffer[state.freqBuffer.length - 1];
+                    if (latestFreq) {
+                        displayFreq = latestFreq;
+                        displayNote = freqToNote(latestFreq);
+                    }
+                }
+
+                const nowUI = performance.now();
+                if (displayFreq && displayNote && nowUI - lastUIUpdate > 30) {
+                    lastUIUpdate = nowUI;
+                    updateTuner(displayFreq, displayNote, state.isLocked);
+                } else if (!displayFreq && nowUI - lastUIUpdate > 100) {
+                    lastUIUpdate = nowUI;
                     if (state.detectedFreq) {
-                        // fade out after 500ms of silence
-                        if (now - state._lastFreqTime > 500) {
+                        if (nowUI - state._lastFreqTime > 800) {
                             resetTunerDisplay();
                         }
                     } else {
                         resetTunerDisplay();
                     }
-                } else if (freq) {
-                    state._lastFreqTime = now;
+                } else if (displayFreq) {
+                    state._lastFreqTime = nowUI;
                 }
 
                 state.animationId = requestAnimationFrame(processAudio);
@@ -1393,12 +1636,9 @@
             // ============================================================
             // UPDATE TUNER UI
             // ============================================================
-            function updateTuner(freq) {
+            function updateTuner(freq, note, locked) {
                 state.detectedFreq = freq;
                 state._lastFreqTime = performance.now();
-
-                const note = freqToNote(freq);
-                if (!note) { resetTunerDisplay(); return; }
 
                 let stringIdx = -1;
                 let targetFreq = note.freq;
@@ -1414,14 +1654,13 @@
                 state.targetStringIndex = stringIdx;
                 state.isInTune = Math.abs(cents) <= 3;
 
-                // Update string status
                 if (stringIdx >= 0 && !state.isChromatic) {
                     state.stringStatus[stringIdx] = state.isInTune ? 'in-tune' : (cents < 0 ? 'flat' : 'sharp');
                 }
 
-                // ---- UI ----
                 dom.noteName.textContent = note.name;
                 dom.noteName.className = 'note-name';
+                if (locked) dom.noteName.classList.add('locked');
                 if (state.isInTune) dom.noteName.classList.add('in-tune');
                 else if (cents < -2) dom.noteName.classList.add('flat');
                 else if (cents > 2) dom.noteName.classList.add('sharp');
@@ -1439,7 +1678,6 @@
                     dom.stringLabel.textContent = '—';
                 }
 
-                // Cents
                 const ct = cents !== 0 ? (cents > 0 ? `+${cents.toFixed(0)}` : `${cents.toFixed(0)}`) : '0';
                 dom.centLabel.textContent = `${ct} ¢`;
                 dom.centLabel.className = 'meter-cent-label';
@@ -1448,7 +1686,6 @@
                 else if (cents > 1) dom.centLabel.classList.add('sharp');
                 else dom.centLabel.classList.add('idle');
 
-                // Status text
                 const st = dom.statusText;
                 if (state.isInTune) {
                     st.textContent = '✨ Perfectly In Tune';
@@ -1480,8 +1717,7 @@
                 dom.statusText.textContent = 'Waiting for signal...';
                 dom.statusText.className = 'meter-status-text idle';
                 drawMeter(null);
-                // reset string rows
-                document.querySelectorAll('.string-row').forEach((row, i) => {
+                document.querySelectorAll('.string-row').forEach((row) => {
                     row.classList.remove('active', 'in-tune', 'flat', 'sharp');
                     const status = row.querySelector('.string-status');
                     if (status) status.textContent = '—';
@@ -1517,7 +1753,6 @@
 
                 ctx.clearRect(0, 0, w, h);
 
-                // Arc
                 const grad = ctx.createLinearGradient(0, 0, w, 0);
                 grad.addColorStop(0, '#f87171');
                 grad.addColorStop(0.3, '#fbbf24');
@@ -1533,7 +1768,6 @@
                 ctx.lineCap = 'round';
                 ctx.stroke();
 
-                // Ticks
                 for (let i = -5; i <= 5; i++) {
                     const angle = Math.PI * 0.75 + (i / 10) * Math.PI * 0.5;
                     const inner = radius - 14,
@@ -1554,7 +1788,6 @@
                     }
                 }
 
-                // Center dot
                 ctx.beginPath();
                 ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
                 ctx.fillStyle = 'rgba(255,255,255,0.15)';
@@ -1564,14 +1797,12 @@
                 ctx.fillStyle = 'rgba(255,255,255,0.4)';
                 ctx.fill();
 
-                // Needle
                 if (cents !== null && cents !== undefined && !isNaN(cents)) {
                     const clamped = Math.max(-50, Math.min(50, cents));
                     const angle = Math.PI * 0.75 + (clamped / 50) * Math.PI * 0.5;
                     const tipX = cx + needleLen * Math.cos(angle);
                     const tipY = cy + needleLen * Math.sin(angle);
 
-                    // Glow
                     const glow = ctx.createRadialGradient(tipX, tipY, 0, tipX, tipY, 22);
                     const inTune = Math.abs(cents) <= 3;
                     const col = inTune ? 'rgba(74,222,128,' : (cents < 0 ? 'rgba(251,191,36,' : 'rgba(248,113,113,');
@@ -1609,7 +1840,6 @@
                     ctx.stroke();
                 }
 
-                // Zero label
                 ctx.fillStyle = 'rgba(255,255,255,0.2)';
                 ctx.font = '9px system-ui, sans-serif';
                 ctx.textAlign = 'center';
@@ -1734,20 +1964,83 @@
             }
 
             // ============================================================
-            // TUNING MODE
+            // INSTRUMENT & TUNING MANAGEMENT
             // ============================================================
+            function setInstrument(instr) {
+                state.instrument = instr;
+                const def = INSTRUMENTS[instr];
+                if (!def) return;
+                state.tuningMode = def.defaultTuning;
+                // Update tuning array
+                state.tuning = TUNINGS[def.defaultTuning] ? TUNINGS[def.defaultTuning].map(s => ({ ...s })) : [];
+                state.stringStatus = new Array(state.tuning.length).fill('idle');
+                state.targetStringIndex = -1;
+                // Update UI
+                renderStrings();
+                renderRefTones();
+                populateTuningSelect();
+                resetTunerDisplay();
+                // Reset lock
+                state.isLocked = false;
+                state.lockedNote = null;
+                state.lockStableCount = 0;
+                dom.lockIndicator.textContent = '🔓';
+                dom.lockIndicator.className = 'lock-indicator';
+                drawMeter(null);
+                // Highlight button
+                document.querySelectorAll('.instrument-btn').forEach(b => b.classList.remove('active-instr'));
+                document.querySelector(`.instrument-btn[data-instr="${instr}"]`)?.classList.add('active-instr');
+                dom.tuningSelect.value = def.defaultTuning;
+                // Update chromatic toggle if needed
+                if (state.isChromatic) {
+                    // keep chromatic mode
+                }
+            }
+
+            function populateTuningSelect() {
+                const instr = state.instrument;
+                const avail = INSTRUMENTS[instr]?.availableTunings || [];
+                const select = dom.tuningSelect;
+                select.innerHTML = '';
+                avail.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    // human label
+                    const labels = {
+                        'standard': 'Standard (E A D G B E)',
+                        'drop-d': 'Drop D (D A D G B E)',
+                        'half-step': 'Half Step Down',
+                        'full-step': 'Full Step Down',
+                        'open-g': 'Open G',
+                        'open-d': 'Open D',
+                        'bass-standard': 'Bass Standard (E A D G)',
+                        'bass-drop-d': 'Bass Drop D (D A D G)',
+                        'baritone-standard': 'Baritone (A D G C E A)'
+                    };
+                    opt.textContent = labels[t] || t;
+                    select.appendChild(opt);
+                });
+                select.value = state.tuningMode;
+            }
+
             function setTuning(mode) {
-                state.currentTuning = mode;
-                state.tuning = TUNINGS[mode] ? TUNINGS[mode].map(s => ({ ...s })) : TUNINGS['standard'].map(s => ({ ...s }));
-                state.stringStatus = new Array(6).fill('idle');
+                state.tuningMode = mode;
+                const tuningArray = TUNINGS[mode];
+                if (!tuningArray) return;
+                state.tuning = tuningArray.map(s => ({ ...s }));
+                state.stringStatus = new Array(state.tuning.length).fill('idle');
                 state.targetStringIndex = -1;
                 renderStrings();
                 renderRefTones();
                 resetTunerDisplay();
                 dom.tuningSelect.value = mode;
-                // Update any active mode buttons
-                document.querySelectorAll('.bottom-controls .btn').forEach(b => b.classList.remove('active-mode'));
                 drawMeter(null);
+                // Reset lock
+                state.isLocked = false;
+                state.lockedNote = null;
+                state.lockStableCount = 0;
+                dom.lockIndicator.textContent = '🔓';
+                dom.lockIndicator.className = 'lock-indicator';
             }
 
             // ============================================================
@@ -1759,11 +2052,15 @@
                 dom.chromaticToggleSwitch.classList.toggle('active', state.isChromatic);
                 dom.chromaticToggleSwitch.setAttribute('aria-checked', state.isChromatic);
                 dom.chromaticLabel.textContent = state.isChromatic ? 'On' : 'Off';
-                state.stringStatus = new Array(6).fill('idle');
+                state.stringStatus = new Array(state.tuning.length).fill('idle');
                 state.targetStringIndex = -1;
                 resetTunerDisplay();
-                // Re-render strings to clear status
                 renderStrings();
+                state.isLocked = false;
+                state.lockedNote = null;
+                state.lockStableCount = 0;
+                dom.lockIndicator.textContent = '🔓';
+                dom.lockIndicator.className = 'lock-indicator';
             }
 
             function toggleTheme() {
@@ -1775,26 +2072,10 @@
                 dom.themeToggleSwitch.setAttribute('aria-checked', state.isDark);
             }
 
-            function toggleBass() {
-                dom.bassToggle.classList.toggle('active-mode');
-                // placeholder
-            }
-
-            function toggleUkulele() {
-                dom.ukuleleToggle.classList.toggle('active-mode');
-            }
-
-            function toggleViolin() {
-                dom.violinToggle.classList.toggle('active-mode');
-            }
-
             function toggleMetronome() {
                 dom.metronomeToggle.classList.toggle('active-mode');
-                if (dom.metronomeToggle.classList.contains('active-mode')) {
-                    dom.metronomeToggle.textContent = '⏱️ ON';
-                } else {
-                    dom.metronomeToggle.textContent = '⏱️ Metronome';
-                }
+                dom.metronomeToggle.textContent = dom.metronomeToggle.classList.contains('active-mode') ? '⏱️ ON' :
+                    '⏱️ Metronome';
             }
 
             // ============================================================
@@ -1827,16 +2108,24 @@
             // INIT
             // ============================================================
             function init() {
-                // Set initial dark mode
                 document.documentElement.setAttribute('data-theme', 'dark');
-
-                // Render UI
-                setTuning('standard');
+                // Set default instrument
+                setInstrument('acoustic');
 
                 // Event listeners
-                dom.startBtn.addEventListener('click', startAudio);
+                dom.micToggle.addEventListener('click', toggleMicrophone);
 
-                dom.tuningSelect.addEventListener('change', (e) => setTuning(e.target.value));
+                // Instrument buttons
+                document.querySelectorAll('.instrument-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const instr = btn.dataset.instr;
+                        if (instr) setInstrument(instr);
+                    });
+                });
+
+                dom.tuningSelect.addEventListener('change', (e) => {
+                    setTuning(e.target.value);
+                });
 
                 dom.themeToggle.addEventListener('click', toggleTheme);
                 dom.themeToggleSwitch.addEventListener('click', toggleTheme);
@@ -1858,9 +2147,6 @@
                         toggleChromatic(); }
                 });
 
-                dom.bassToggle.addEventListener('click', toggleBass);
-                dom.ukuleleToggle.addEventListener('click', toggleUkulele);
-                dom.violinToggle.addEventListener('click', toggleViolin);
                 dom.metronomeToggle.addEventListener('click', toggleMetronome);
 
                 dom.volSlider.addEventListener('input', (e) => {
@@ -1870,34 +2156,24 @@
                 window.addEventListener('resize', handleResize);
                 setTimeout(handleResize, 100);
 
-                // Keyboard shortcuts
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && dom.settingsOverlay.classList.contains('open')) closeSettings();
                     if (e.key === 'c' || e.key === 'C') toggleChromatic();
                     if (e.key === 't' || e.key === 'T') toggleTheme();
+                    if (e.key === ' ') { e.preventDefault();
+                        toggleMicrophone(); }
                 });
 
-                // Auto-start if possible (some browsers allow)
-                setTimeout(() => {
-                    if (!state.isRunning) {
-                        // just show idle
-                        updateMicStatus('idle', 'Click "Start Tuner"');
-                    }
-                }, 200);
-
+                updateMicStatus('off', 'Microphone off');
                 drawMeter(null);
-                console.log('🎸 Guitar Tuner ready');
+                console.log('🎸 Multi‑Instrument Tuner ready');
             }
 
-            // ============================================================
-            // START
-            // ============================================================
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
                 init();
             }
-
         })();
     </script>
 </body>
