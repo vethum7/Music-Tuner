@@ -4,38 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Free Online Guitar Tuner - Accurate Browser-Based Guitar Tuning Tool</title>
-    <meta name="description" content="Tune your guitar accurately with our free online guitar tuner. Works with any microphone, supports standard and alternative tunings, with real-time pitch detection." />
+    <meta name="description" content="Tune your guitar accurately with our free online guitar tuner. Works with any microphone, supports standard and alternative tunings." />
     <link rel="canonical" href="https://your-domain.com/guitar-tuner" />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Free Online Guitar Tuner - Accurate Browser-Based Guitar Tuning Tool" />
-    <meta property="og:description" content="Tune your guitar accurately with our free online guitar tuner. Real-time pitch detection, multiple tuning modes, and professional tuning meter." />
+    <meta property="og:description" content="Tune your guitar accurately with our free online guitar tuner. Real-time pitch detection, multiple tuning modes." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://your-domain.com/guitar-tuner" />
-    <meta property="og:image" content="https://your-domain.com/og-image.jpg" />
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "Free Online Guitar Tuner",
-            "description": "Accurate browser-based guitar tuning tool with real-time pitch detection",
-            "applicationCategory": "Music",
-            "browserRequirements": "Requires microphone access",
-            "operatingSystem": "All",
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-            }
-        }
-    </script>
 
     <style>
         /* ============================================================
-               CSS RESET & BASE
-               ============================================================ */
+                   CSS RESET & VARIABLES
+                   ============================================================ */
         *,
         *::before,
         *::after {
@@ -47,37 +28,33 @@
         :root {
             --bg-primary: #0b0e14;
             --bg-secondary: #131821;
-            --bg-glass: rgba(255, 255, 255, 0.05);
+            --bg-glass: rgba(255, 255, 255, 0.04);
             --border-glass: rgba(255, 255, 255, 0.08);
             --text-primary: #f0f2f5;
             --text-secondary: #a8b2c8;
             --text-muted: #6b7a93;
             --accent-green: #4ade80;
-            --accent-green-glow: rgba(74, 222, 128, 0.25);
+            --accent-green-glow: rgba(74, 222, 128, 0.3);
             --accent-red: #f87171;
             --accent-yellow: #fbbf24;
             --accent-blue: #60a5fa;
-            --accent-purple: #a78bfa;
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             --radius: 20px;
             --radius-sm: 12px;
             --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            --needle-width: 4px;
-            --needle-length: 100px;
             --meter-width: 320px;
         }
 
-        /* Light mode */
         [data-theme="light"] {
             --bg-primary: #f0f2f5;
             --bg-secondary: #ffffff;
-            --bg-glass: rgba(0, 0, 0, 0.04);
+            --bg-glass: rgba(0, 0, 0, 0.03);
             --border-glass: rgba(0, 0, 0, 0.08);
             --text-primary: #0b0e14;
             --text-secondary: #2d3748;
             --text-muted: #6b7a93;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
         }
 
         html {
@@ -101,19 +78,19 @@
         }
 
         /* ============================================================
-               APP CONTAINER
-               ============================================================ */
+                   APP CONTAINER
+                   ============================================================ */
         .app {
             width: 100%;
             max-width: 720px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding: 20px 16px 30px;
+            gap: 18px;
+            padding: 20px 16px 26px;
             background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-glass);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -122,17 +99,17 @@
         }
 
         /* ============================================================
-               AD PLACEHOLDERS
-               ============================================================ */
+                   AD PLACEHOLDERS
+                   ============================================================ */
         .ad-placeholder {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px dashed rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.06);
             border-radius: var(--radius-sm);
-            padding: 12px;
+            padding: 10px;
             text-align: center;
             font-size: 0.7rem;
             color: var(--text-muted);
-            min-height: 60px;
+            min-height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -140,22 +117,9 @@
             width: 100%;
         }
 
-        .ad-placeholder-top {
-            min-height: 70px;
-            margin-bottom: 4px;
-        }
-        .ad-placeholder-bottom {
-            min-height: 70px;
-            margin-top: 4px;
-        }
-        .ad-placeholder-middle {
-            min-height: 60px;
-            margin: 8px 0;
-        }
-
         /* ============================================================
-               HEADER
-               ============================================================ */
+                   HEADER
+                   ============================================================ */
         .header {
             display: flex;
             align-items: center;
@@ -180,7 +144,7 @@
         }
 
         .header-sub {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             font-weight: 400;
             -webkit-text-fill-color: var(--text-secondary);
@@ -206,11 +170,10 @@
             cursor: pointer;
             transition: all var(--transition);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
         }
 
         .btn-icon:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             color: var(--text-primary);
             transform: scale(1.05);
         }
@@ -220,8 +183,48 @@
         }
 
         /* ============================================================
-               MICROPHONE STATUS
-               ============================================================ */
+                   START TUNER BUTTON
+                   ============================================================ */
+        .start-tuner-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 8px 0 4px;
+        }
+
+        .btn-start {
+            background: var(--accent-blue);
+            color: #0b0e14;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            box-shadow: 0 0 30px rgba(96, 165, 250, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 40px rgba(96, 165, 250, 0.35);
+        }
+
+        .btn-start:active {
+            transform: scale(0.96);
+        }
+
+        .btn-start:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ============================================================
+                   MICROPHONE STATUS
+                   ============================================================ */
         .mic-status {
             display: flex;
             align-items: center;
@@ -233,8 +236,8 @@
             font-size: 0.8rem;
             color: var(--text-secondary);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             transition: all var(--transition);
+            justify-content: center;
         }
 
         .mic-dot {
@@ -251,7 +254,6 @@
             box-shadow: 0 0 16px var(--accent-green-glow);
             animation: pulse-dot 1.2s ease-in-out infinite;
         }
-
         .mic-dot.error {
             background: var(--accent-red);
         }
@@ -277,11 +279,11 @@
         }
 
         /* ============================================================
-               MAIN DISPLAY — NOTE + FREQ
-               ============================================================ */
+                   NOTE DISPLAY
+                   ============================================================ */
         .note-display {
             text-align: center;
-            padding: 8px 0 4px;
+            padding: 4px 0 2px;
         }
 
         .note-name {
@@ -297,15 +299,12 @@
             color: var(--accent-green);
             text-shadow: 0 0 40px var(--accent-green-glow);
         }
-
         .note-name.flat {
             color: var(--accent-yellow);
         }
-
         .note-name.sharp {
             color: var(--accent-red);
         }
-
         .note-name.idle {
             color: var(--text-muted);
         }
@@ -322,7 +321,6 @@
             color: var(--text-secondary);
             margin-top: 2px;
             font-variant-numeric: tabular-nums;
-            letter-spacing: 0.5px;
         }
 
         .note-freq span {
@@ -331,9 +329,9 @@
         }
 
         .string-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .string-label strong {
@@ -342,13 +340,13 @@
         }
 
         /* ============================================================
-               TUNING METER
-               ============================================================ */
+                   METER
+                   ============================================================ */
         .meter-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 0 12px;
+            padding: 4px 0 8px;
         }
 
         .meter-container {
@@ -403,7 +401,6 @@
             color: var(--accent-green);
             text-shadow: 0 0 24px var(--accent-green-glow);
         }
-
         .meter-status-text.flat {
             color: var(--accent-yellow);
         }
@@ -415,13 +412,13 @@
         }
 
         /* ============================================================
-               STRING VISUALIZATION
-               ============================================================ */
+                   STRING VISUALIZATION
+                   ============================================================ */
         .strings-visual {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding: 8px 0 4px;
+            gap: 5px;
+            padding: 6px 0 2px;
             align-items: center;
         }
 
@@ -443,7 +440,7 @@
         .string-row .string-name {
             font-size: 1.1rem;
             font-weight: 600;
-            width: 28px;
+            width: 32px;
             text-align: right;
             color: var(--text-secondary);
             transition: color var(--transition);
@@ -458,26 +455,26 @@
             height: 6px;
             border-radius: 4px;
             background: var(--text-muted);
-            opacity: 0.25;
+            opacity: 0.2;
             transition: all var(--transition);
             position: relative;
         }
 
         .string-row.active .string-bar {
-            opacity: 0.7;
+            opacity: 0.6;
             background: var(--accent-blue);
-            box-shadow: 0 0 16px rgba(96, 165, 250, 0.2);
+            box-shadow: 0 0 16px rgba(96, 165, 250, 0.15);
         }
 
         .string-row.in-tune .string-bar {
             opacity: 1;
             background: var(--accent-green);
-            box-shadow: 0 0 20px var(--accent-green-glow);
+            box-shadow: 0 0 24px var(--accent-green-glow);
         }
 
         .string-row .string-status {
             font-size: 0.7rem;
-            width: 48px;
+            width: 52px;
             text-align: center;
             color: var(--text-muted);
             font-weight: 500;
@@ -487,19 +484,18 @@
         .string-row.active .string-status {
             color: var(--text-secondary);
         }
-
         .string-row.in-tune .string-status {
             color: var(--accent-green);
         }
 
         /* ============================================================
-               TUNING MODES
-               ============================================================ */
+                   TUNING CONTROLS
+                   ============================================================ */
         .tuning-section {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            padding: 6px 0;
+            padding: 4px 0;
         }
 
         .tuning-section-header {
@@ -527,7 +523,6 @@
             cursor: pointer;
             outline: none;
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             transition: all var(--transition);
             font-family: var(--font);
             appearance: none;
@@ -542,20 +537,14 @@
         .tuning-select:hover {
             border-color: rgba(255, 255, 255, 0.15);
         }
-
         .tuning-select:focus {
             border-color: var(--accent-blue);
             box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
         }
 
-        .tuning-select option {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
         /* ============================================================
-               REFERENCE TONES
-               ============================================================ */
+                   REFERENCE TONES
+                   ============================================================ */
         .ref-tones {
             display: flex;
             flex-wrap: wrap;
@@ -576,7 +565,6 @@
             transition: all var(--transition);
             font-family: var(--font);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             min-width: 44px;
             text-align: center;
         }
@@ -604,15 +592,19 @@
             border-color: var(--accent-red);
         }
 
+        .ref-btn.stop:hover {
+            background: #ef4444;
+        }
+
         /* ============================================================
-               BOTTOM CONTROLS
-               ============================================================ */
+                   BOTTOM CONTROLS
+                   ============================================================ */
         .bottom-controls {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             justify-content: center;
-            padding: 4px 0 0;
+            padding: 2px 0 0;
         }
 
         .bottom-controls .btn {
@@ -627,7 +619,6 @@
             transition: all var(--transition);
             font-family: var(--font);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -649,8 +640,8 @@
         }
 
         /* ============================================================
-               SETTINGS PANEL (modal)
-               ============================================================ */
+                   SETTINGS MODAL
+                   ============================================================ */
         .settings-overlay {
             position: fixed;
             inset: 0;
@@ -700,7 +691,7 @@
         .settings-group {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
             margin-bottom: 20px;
         }
 
@@ -716,12 +707,6 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
             font-weight: 500;
-        }
-
-        .settings-row .toggle-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .toggle-switch {
@@ -751,7 +736,6 @@
             background: var(--accent-blue);
             border-color: var(--accent-blue);
         }
-
         .toggle-switch.active .toggle-knob {
             left: 22px;
             background: #fff;
@@ -786,33 +770,18 @@
         }
 
         /* ============================================================
-               SCROLLBAR
-               ============================================================ */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--text-muted);
-            border-radius: 4px;
-        }
-
-        /* ============================================================
-               RESPONSIVE
-               ============================================================ */
+                   RESPONSIVE
+                   ============================================================ */
         @media (max-width: 640px) {
             .app {
-                padding: 16px 12px 24px;
-                gap: 16px;
-                border-radius: var(--radius-sm);
+                padding: 16px 12px 20px;
+                gap: 14px;
             }
             .header-title {
                 font-size: 1.2rem;
             }
             .header-sub {
-                font-size: 0.65rem;
+                font-size: 0.6rem;
             }
             .note-name {
                 font-size: 4rem;
@@ -836,14 +805,14 @@
             }
             .string-row .string-name {
                 font-size: 0.95rem;
-                width: 24px;
+                width: 28px;
             }
             .string-row .string-bar {
                 height: 5px;
             }
             .string-row .string-status {
                 font-size: 0.6rem;
-                width: 40px;
+                width: 44px;
             }
             .ref-btn {
                 font-size: 0.7rem;
@@ -868,36 +837,25 @@
                 font-size: 0.7rem;
                 padding: 6px 12px;
             }
-            .mic-dot {
-                width: 8px;
-                height: 8px;
-            }
-            .settings-panel {
-                padding: 20px 16px;
-            }
-            .ad-placeholder {
-                min-height: 50px;
-                font-size: 0.6rem;
-                padding: 8px;
-            }
-            .ad-placeholder-top {
-                min-height: 60px;
-            }
-            .ad-placeholder-bottom {
-                min-height: 60px;
+            .btn-start {
+                padding: 12px 30px;
+                font-size: 1rem;
             }
             :root {
                 --meter-width: 280px;
-                --needle-length: 70px;
+            }
+            .ad-placeholder {
+                min-height: 45px;
+                font-size: 0.6rem;
             }
         }
 
         @media (max-width: 400px) {
             .note-name {
-                font-size: 3.2rem;
+                font-size: 3rem;
             }
             .note-octave {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
             .meter-container {
                 height: 75px;
@@ -905,35 +863,31 @@
             }
             :root {
                 --meter-width: 220px;
-                --needle-length: 55px;
-            }
-            .header-title {
-                font-size: 1rem;
             }
             .string-row .string-name {
                 font-size: 0.8rem;
-                width: 20px;
+                width: 24px;
             }
             .string-row .string-status {
                 font-size: 0.55rem;
-                width: 34px;
+                width: 36px;
             }
         }
 
         @media (orientation: landscape) and (max-height: 500px) {
             .app {
-                gap: 10px;
-                padding: 12px 16px 16px;
+                gap: 8px;
+                padding: 10px 12px 14px;
             }
             .note-name {
-                font-size: 3.2rem;
+                font-size: 3rem;
             }
             .note-octave {
-                font-size: 1.4rem;
+                font-size: 1.2rem;
             }
             .meter-container {
-                height: 70px;
-                max-width: 240px;
+                height: 65px;
+                max-width: 220px;
             }
             .strings-visual .string-row {
                 padding: 2px 8px;
@@ -942,13 +896,17 @@
                 height: 4px;
             }
             .header-title {
-                font-size: 1.1rem;
+                font-size: 1rem;
+            }
+            .btn-start {
+                padding: 8px 20px;
+                font-size: 0.9rem;
             }
         }
 
         /* ============================================================
-               UTILITY
-               ============================================================ */
+                   UTILITY
+                   ============================================================ */
         .sr-only {
             position: absolute;
             width: 1px;
@@ -960,28 +918,17 @@
             border: 0;
         }
 
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .app {
-                border-width: 2px;
-            }
-            .string-row .string-bar {
-                opacity: 0.5;
-            }
-            .string-row.active .string-bar {
-                opacity: 1;
-            }
-        }
-
-        /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             *,
             *::before,
             *::after {
                 animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
@@ -990,12 +937,10 @@
     <!-- ============================================================
     APP
     ============================================================ -->
-    <div class="app" role="main" aria-label="Guitar Tuner Application">
+    <div class="app" role="main" aria-label="Guitar Tuner">
 
         <!-- TOP AD -->
-        <div class="ad-placeholder ad-placeholder-top" aria-hidden="true">
-            <span>📢 Ad Placeholder — Top Banner</span>
-        </div>
+        <div class="ad-placeholder" aria-hidden="true">📢 Ad Placeholder — Top Banner</div>
 
         <!-- HEADER -->
         <header class="header">
@@ -1004,19 +949,20 @@
                 <div class="header-sub">Professional Online Tuner</div>
             </div>
             <div class="header-actions">
-                <button class="btn-icon" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
-                    <span id="themeIcon">🌙</span>
-                </button>
-                <button class="btn-icon" id="settingsToggle" aria-label="Open settings" title="Settings">
-                    ⚙️
-                </button>
+                <button class="btn-icon" id="themeToggle" aria-label="Toggle dark/light mode" title="Theme">🌙</button>
+                <button class="btn-icon" id="settingsToggle" aria-label="Open settings" title="Settings">⚙️</button>
             </div>
         </header>
+
+        <!-- START TUNER -->
+        <div class="start-tuner-wrap">
+            <button class="btn-start" id="startBtn">🎤 Start Tuner</button>
+        </div>
 
         <!-- MIC STATUS -->
         <div class="mic-status" id="micStatus" role="status" aria-live="polite">
             <span class="mic-dot idle" id="micDot"></span>
-            <span class="mic-label" id="micLabel">Initializing...</span>
+            <span class="mic-label" id="micLabel">Click "Start Tuner"</span>
         </div>
 
         <!-- NOTE DISPLAY -->
@@ -1025,38 +971,30 @@
                 <span class="note-name idle" id="noteName">—</span>
                 <span class="note-octave" id="noteOctave"></span>
             </div>
-            <div class="note-freq">
-                <span id="freqDisplay">0.0</span> Hz
-            </div>
-            <div class="string-label">
-                String: <strong id="stringLabel">—</strong>
-            </div>
+            <div class="note-freq"><span id="freqDisplay">0.0</span> Hz</div>
+            <div class="string-label">String: <strong id="stringLabel">—</strong></div>
         </div>
 
-        <!-- TUNING METER -->
+        <!-- METER -->
         <div class="meter-wrapper">
             <div class="meter-container">
                 <canvas class="meter-canvas" id="meterCanvas" aria-label="Tuning meter"></canvas>
             </div>
             <div class="meter-cent-label idle" id="centLabel">—</div>
-            <div class="meter-status-text idle" id="statusText">Waiting for signal...</div>
+            <div class="meter-status-text idle" id="statusText">Ready</div>
         </div>
 
-        <!-- STRINGS VISUAL -->
-        <div class="strings-visual" id="stringsVisual" role="list" aria-label="Guitar strings">
-            <!-- Rendered by JS -->
-        </div>
+        <!-- STRINGS -->
+        <div class="strings-visual" id="stringsVisual" role="list" aria-label="Guitar strings"></div>
 
         <!-- MIDDLE AD -->
-        <div class="ad-placeholder ad-placeholder-middle" aria-hidden="true">
-            <span>📢 Ad Placeholder — Middle Banner</span>
-        </div>
+        <div class="ad-placeholder" aria-hidden="true">📢 Ad Placeholder — Middle Banner</div>
 
-        <!-- TUNING MODES -->
+        <!-- TUNING & REFERENCE -->
         <div class="tuning-section">
             <div class="tuning-section-header">
                 <label for="tuningSelect">🎛️ Tuning Mode</label>
-                <select class="tuning-select" id="tuningSelect" aria-label="Select tuning mode">
+                <select class="tuning-select" id="tuningSelect" aria-label="Select tuning">
                     <option value="standard">Standard (E A D G B E)</option>
                     <option value="drop-d">Drop D (D A D G B E)</option>
                     <option value="half-step">Half Step Down (E♭ A♭ D♭ G♭ B♭ E♭)</option>
@@ -1065,26 +1003,20 @@
                     <option value="open-d">Open D (D A D F♯ A D)</option>
                 </select>
             </div>
-
-            <!-- REFERENCE TONES -->
-            <div class="ref-tones" id="refTones" role="group" aria-label="Reference tone buttons">
-                <!-- Rendered by JS -->
-            </div>
+            <div class="ref-tones" id="refTones" role="group" aria-label="Reference tones"></div>
         </div>
 
         <!-- BOTTOM CONTROLS -->
         <div class="bottom-controls">
-            <button class="btn" id="chromaticToggle" aria-label="Toggle chromatic mode">🎵 Chromatic</button>
-            <button class="btn" id="bassToggle" aria-label="Toggle bass mode">🎸 Bass</button>
-            <button class="btn" id="ukuleleToggle" aria-label="Toggle ukulele mode">🪕 Ukulele</button>
-            <button class="btn" id="violinToggle" aria-label="Toggle violin mode">🎻 Violin</button>
-            <button class="btn" id="metronomeToggle" aria-label="Toggle metronome">⏱️ Metronome</button>
+            <button class="btn" id="chromaticToggle">🎵 Chromatic</button>
+            <button class="btn" id="bassToggle">🎸 Bass</button>
+            <button class="btn" id="ukuleleToggle">🪕 Ukulele</button>
+            <button class="btn" id="violinToggle">🎻 Violin</button>
+            <button class="btn" id="metronomeToggle">⏱️ Metronome</button>
         </div>
 
         <!-- BOTTOM AD -->
-        <div class="ad-placeholder ad-placeholder-bottom" aria-hidden="true">
-            <span>📢 Ad Placeholder — Bottom Banner</span>
-        </div>
+        <div class="ad-placeholder" aria-hidden="true">📢 Ad Placeholder — Bottom Banner</div>
     </div>
 
     <!-- ============================================================
@@ -1096,7 +1028,7 @@
             <div class="settings-group">
                 <div class="settings-row">
                     <label for="volSlider">Reference Volume</label>
-                    <input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="60" aria-label="Reference tone volume" />
+                    <input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="60" />
                 </div>
                 <div class="settings-row">
                     <label>Dark Mode</label>
@@ -1122,39 +1054,20 @@
     </div>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT — FULLY WORKING GUITAR TUNER
     ============================================================ -->
     <script>
-        /**
-         * ================================================================
-         *  GUITAR TUNER — Complete JavaScript
-         *  Uses Web Audio API for real-time pitch detection with YIN algorithm.
-         *  Fully responsive, mobile-friendly, production-ready.
-         * ================================================================
-         */
-
         (function() {
             'use strict';
 
             // ============================================================
-            //  CONSTANTS
+            // CONSTANTS
             // ============================================================
+            const A4 = 440;
+            const SEMITONE = Math.pow(2, 1 / 12);
+            const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
-            const A4_FREQ = 440;
-            const SEMITONE_RATIO = Math.pow(2, 1 / 12);
-            const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-            // Standard tuning (string index 0 = low E)
-            const STANDARD_TUNING = [
-                { note: 'E', octave: 2, freq: 82.41 },
-                { note: 'A', octave: 2, freq: 110.00 },
-                { note: 'D', octave: 3, freq: 146.83 },
-                { note: 'G', octave: 3, freq: 196.00 },
-                { note: 'B', octave: 3, freq: 246.94 },
-                { note: 'E', octave: 4, freq: 329.63 }
-            ];
-
-            const TUNING_PRESETS = {
+            const TUNINGS = {
                 'standard': [
                     { note: 'E', octave: 2, freq: 82.41 },
                     { note: 'A', octave: 2, freq: 110.00 },
@@ -1205,37 +1118,16 @@
                 ]
             };
 
-            // Map note+octave to string index for highlighting
-            const NOTE_OCTAVE_TO_STRING = {
-                'E2': 0,
-                'A2': 1,
-                'D3': 2,
-                'G3': 3,
-                'B3': 4,
-                'E4': 5,
-                'D2': 0, // drop D
-                'D#2': 0, // half step
-                'G#2': 1,
-                'C#3': 2,
-                'F#3': 3,
-                'A#3': 4,
-                'D#4': 5,
-                'G2': 1, // full step
-                'C3': 2,
-                'F3': 3,
-                'A3': 4,
-                'D4': 5,
-                'F#2': 3, // open D
-            };
-
             // ============================================================
-            //  DOM REFS
+            // DOM REFS
             // ============================================================
-
-            const $ = (sel) => document.querySelector(sel);
-            const $$ = (sel) => document.querySelectorAll(sel);
+            const $ = (s) => document.querySelector(s);
+            const $$ = (s) => document.querySelectorAll(s);
 
             const dom = {
+                startBtn: $('#startBtn'),
+                micDot: $('#micDot'),
+                micLabel: $('#micLabel'),
                 noteName: $('#noteName'),
                 noteOctave: $('#noteOctave'),
                 freqDisplay: $('#freqDisplay'),
@@ -1246,11 +1138,7 @@
                 stringsVisual: $('#stringsVisual'),
                 refTones: $('#refTones'),
                 tuningSelect: $('#tuningSelect'),
-                micStatus: $('#micStatus'),
-                micDot: $('#micDot'),
-                micLabel: $('#micLabel'),
                 themeToggle: $('#themeToggle'),
-                themeIcon: $('#themeIcon'),
                 settingsToggle: $('#settingsToggle'),
                 settingsOverlay: $('#settingsOverlay'),
                 settingsClose: $('#settingsClose'),
@@ -1267,62 +1155,42 @@
             };
 
             // ============================================================
-            //  STATE
+            // STATE
             // ============================================================
-
             const state = {
-                isListening: false,
+                isRunning: false,
                 isChromatic: false,
-                isBass: false,
-                isUkulele: false,
-                isViolin: false,
-                isMetronome: false,
                 isDark: true,
                 currentTuning: 'standard',
-                tuning: STANDARD_TUNING,
+                tuning: TUNINGS['standard'].map(s => ({ ...s })),
                 detectedFreq: 0,
-                detectedNote: null, // { name, octave, freq }
                 cents: 0,
                 targetFreq: 0,
                 targetStringIndex: -1,
-                stringStatus: new Array(6).fill('idle'), // 'idle' | 'flat' | 'in-tune' | 'sharp'
+                stringStatus: new Array(6).fill('idle'),
                 isInTune: false,
-                refTonePlaying: false,
-                refToneOsc: null,
-                refToneGain: null,
-                refToneTimeout: null,
                 audioCtx: null,
                 analyser: null,
                 dataArray: null,
                 source: null,
                 animationId: null,
                 pitchHistory: [],
-                historyMax: 6,
-                signalThreshold: 0.01,
-                lastValidNote: null,
-                lastValidFreq: 0,
-                stableCount: 0,
-                stableThreshold: 3,
-                meterWidth: 320,
-                needleLength: 100,
-                isMobile: false,
-                settingsOpen: false,
+                historyMax: 5,
+                signalThreshold: 0.012,
                 volume: 0.6,
+                refOsc: null,
+                refGain: null,
+                refTimeout: null,
+                isRefPlaying: false,
             };
 
             // ============================================================
-            //  PITCH DETECTION — YIN ALGORITHM
+            // PITCH DETECTION — YIN
             // ============================================================
-
-            /**
-             * YIN pitch detection algorithm.
-             * Returns frequency in Hz or null if no reliable pitch.
-             */
-            function detectPitchYIN(buffer, sampleRate) {
+            function detectPitch(buffer, sampleRate) {
                 const len = buffer.length;
                 if (len < 256) return null;
 
-                // Difference function
                 const diff = new Float32Array(len);
                 let sum = 0;
                 for (let t = 0; t < len; t++) {
@@ -1334,314 +1202,234 @@
                     diff[t] = d;
                     if (t > 0) sum += d;
                 }
-
                 if (sum === 0) return null;
 
-                // Cumulative mean normalized difference
                 const cmnd = new Float32Array(len);
-                let cumSum = 0;
+                let cum = 0;
                 cmnd[0] = 1;
                 for (let t = 1; t < len; t++) {
-                    cumSum += diff[t];
-                    if (cumSum === 0) { cmnd[t] = 1; } else { cmnd[t] = diff[t] / (cumSum / t); }
+                    cum += diff[t];
+                    cmnd[t] = diff[t] / (cum / t);
                 }
 
-                // Find first minimum below threshold
-                const threshold = 0.15;
                 let tau = -1;
                 let minVal = Infinity;
+                const threshold = 0.15;
                 for (let t = 2; t < len; t++) {
-                    if (cmnd[t] < threshold) {
-                        tau = t;
-                        break;
-                    }
-                    if (cmnd[t] < minVal) {
-                        minVal = cmnd[t];
-                        tau = t;
-                    }
+                    if (cmnd[t] < threshold) { tau = t; break; }
+                    if (cmnd[t] < minVal) { minVal = cmnd[t];
+                        tau = t; }
                 }
-
                 if (tau < 2) return null;
 
-                // Parabolic interpolation for sub-sample precision
-                let betterTau = tau;
+                // Parabolic interpolation
+                let better = tau;
                 if (tau > 1 && tau < len - 1) {
-                    const x0 = cmnd[tau - 1];
-                    const x1 = cmnd[tau];
-                    const x2 = cmnd[tau + 1];
+                    const x0 = cmnd[tau - 1],
+                        x1 = cmnd[tau],
+                        x2 = cmnd[tau + 1];
                     if (x0 > 0 && x2 > 0) {
                         const denom = x0 - 2 * x1 + x2;
-                        if (denom !== 0) {
-                            betterTau = tau + (x0 - x2) / (2 * denom);
-                        }
+                        if (denom !== 0) better = tau + (x0 - x2) / (2 * denom);
                     }
                 }
-
-                const freq = sampleRate / betterTau;
-                // Reject frequencies outside guitar range (40 Hz – 2000 Hz)
+                const freq = sampleRate / better;
                 if (freq < 40 || freq > 2000) return null;
-
-                // Confidence: check if the CMND value at tau is low enough
-                const confidence = 1 - cmnd[Math.floor(tau)];
-                if (confidence < 0.5) return null;
-
+                // confidence check
+                const conf = 1 - cmnd[Math.floor(tau)];
+                if (conf < 0.5) return null;
                 return freq;
             }
 
             // ============================================================
-            //  NOTE MAPPING
+            // NOTE HELPERS
             // ============================================================
-
             function freqToNote(freq) {
                 if (!freq || freq < 20) return null;
-                const semitones = 12 * Math.log2(freq / A4_FREQ);
+                const semitones = 12 * Math.log2(freq / A4);
                 const rounded = Math.round(semitones);
                 const midi = 69 + rounded;
                 const octave = Math.floor(midi / 12) - 1;
-                const noteIndex = ((midi % 12) + 12) % 12;
-                const name = NOTE_NAMES[noteIndex];
-                const targetFreq = A4_FREQ * Math.pow(SEMITONE_RATIO, rounded);
+                const idx = ((midi % 12) + 12) % 12;
+                const name = NOTES[idx];
+                const target = A4 * Math.pow(SEMITONE, rounded);
                 const cents = 100 * (semitones - rounded);
-                return {
-                    name,
-                    octave,
-                    midi,
-                    freq: targetFreq,
-                    cents: cents,
-                    displayName: name,
-                };
+                return { name, octave, freq: target, cents };
             }
 
-            function findClosestString(freq, tuning) {
-                if (!freq || !tuning || tuning.length === 0) return -1;
-                let bestIdx = -1;
-                let bestDiff = Infinity;
+            function closestString(freq, tuning) {
+                if (!freq || !tuning.length) return -1;
+                let best = -1,
+                    bestDiff = Infinity;
                 for (let i = 0; i < tuning.length; i++) {
                     const diff = Math.abs(freq - tuning[i].freq);
-                    if (diff < bestDiff) {
-                        bestDiff = diff;
-                        bestIdx = i;
-                    }
+                    if (diff < bestDiff) { bestDiff = diff;
+                        best = i; }
                 }
-                // Only match if within 5% of target frequency
-                if (bestIdx >= 0 && bestDiff / tuning[bestIdx].freq < 0.05) {
-                    return bestIdx;
-                }
+                if (best >= 0 && bestDiff / tuning[best].freq < 0.05) return best;
                 return -1;
             }
 
-            function centsBetween(freq, targetFreq) {
-                if (!freq || !targetFreq) return 0;
-                return 1200 * Math.log2(freq / targetFreq);
+            function centsBetween(freq, target) {
+                if (!freq || !target) return 0;
+                return 1200 * Math.log2(freq / target);
             }
 
             // ============================================================
-            //  AUDIO INIT
+            // AUDIO INIT
             // ============================================================
-
-            async function initAudio() {
+            async function startAudio() {
+                if (state.isRunning) return true;
                 try {
-                    if (state.audioCtx && state.audioCtx.state === 'running') {
-                        return true;
-                    }
-
                     const ctx = new(window.AudioContext || window.webkitAudioContext)();
                     state.audioCtx = ctx;
 
                     const stream = await navigator.mediaDevices.getUserMedia({
-                        audio: {
-                            echoCancellation: false,
-                            noiseSuppression: false,
-                            autoGainControl: false,
-                        }
+                        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
                     });
 
                     const source = ctx.createMediaStreamSource(stream);
                     state.source = source;
-
                     const analyser = ctx.createAnalyser();
                     analyser.fftSize = 2048;
                     analyser.smoothingTimeConstant = 0.8;
                     source.connect(analyser);
                     state.analyser = analyser;
+                    state.dataArray = new Float32Array(analyser.fftSize);
 
-                    const dataArray = new Float32Array(analyser.fftSize);
-                    state.dataArray = dataArray;
+                    if (ctx.state === 'suspended') await ctx.resume();
 
-                    // Resume context if suspended
-                    if (ctx.state === 'suspended') {
-                        await ctx.resume();
-                    }
-
-                    state.isListening = true;
-                    updateMicStatus('connected', '🎤 Connected — Listening...');
+                    state.isRunning = true;
+                    updateMicStatus('active', '🎤 Listening...');
+                    dom.startBtn.disabled = true;
+                    dom.startBtn.textContent = '✅ Tuner Active';
+                    processAudio();
                     return true;
                 } catch (err) {
-                    console.error('Microphone error:', err);
-                    state.isListening = false;
+                    console.error('Mic error:', err);
+                    state.isRunning = false;
+                    let msg = '⚠️ Microphone error';
                     if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-                        updateMicStatus('error', '🚫 Permission Denied');
-                    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-                        updateMicStatus('error', '🔇 No microphone found');
-                    } else {
-                        updateMicStatus('error', '⚠️ Microphone error');
+                        msg = '🚫 Permission Denied';
+                    } else if (err.name === 'NotFoundError') {
+                        msg = '🔇 No microphone found';
                     }
+                    updateMicStatus('error', msg);
+                    dom.startBtn.disabled = false;
+                    dom.startBtn.textContent = '🔄 Retry';
                     return false;
                 }
             }
 
             function updateMicStatus(status, label) {
                 const dot = dom.micDot;
-                const labelEl = dom.micLabel;
                 dot.className = 'mic-dot';
-                if (status === 'connected' || status === 'listening') {
-                    dot.classList.add('active');
-                } else if (status === 'error') {
-                    dot.classList.add('error');
-                } else if (status === 'idle') {
-                    dot.classList.add('idle');
-                }
-                labelEl.textContent = label;
+                if (status === 'active') dot.classList.add('active');
+                else if (status === 'error') dot.classList.add('error');
+                else dot.classList.add('idle');
+                dom.micLabel.textContent = label;
             }
 
             // ============================================================
-            //  AUDIO PROCESSING LOOP
+            // MAIN PROCESSING LOOP
             // ============================================================
+            let lastUIUpdate = 0;
 
             function processAudio() {
-                if (!state.isListening || !state.analyser) {
+                if (!state.isRunning || !state.analyser) {
                     state.animationId = requestAnimationFrame(processAudio);
                     return;
                 }
 
                 const analyser = state.analyser;
-                const dataArray = state.dataArray;
-                analyser.getFloatTimeDomainData(dataArray);
+                const data = state.dataArray;
+                analyser.getFloatTimeDomainData(data);
 
-                // Compute RMS to check for signal
+                // RMS
                 let sum = 0;
-                for (let i = 0; i < dataArray.length; i++) {
-                    sum += dataArray[i] * dataArray[i];
-                }
-                const rms = Math.sqrt(sum / dataArray.length);
+                for (let i = 0; i < data.length; i++) sum += data[i] * data[i];
+                const rms = Math.sqrt(sum / data.length);
 
                 let freq = null;
                 if (rms > state.signalThreshold) {
-                    freq = detectPitchYIN(dataArray, state.audioCtx.sampleRate);
+                    freq = detectPitch(data, state.audioCtx.sampleRate);
                 }
 
-                // Smoothing: use history to reduce flicker
+                // Smoothing
                 if (freq && freq > 40 && freq < 2000) {
                     state.pitchHistory.push(freq);
-                    if (state.pitchHistory.length > state.historyMax) {
-                        state.pitchHistory.shift();
-                    }
-                    // Median filter
+                    if (state.pitchHistory.length > state.historyMax) state.pitchHistory.shift();
                     const sorted = [...state.pitchHistory].sort((a, b) => a - b);
                     const median = sorted[Math.floor(sorted.length / 2)];
-                    // Only use if stable
                     const variance = sorted.reduce((acc, v) => acc + (v - median) ** 2, 0) / sorted.length;
-                    if (variance < 100) {
-                        freq = median;
-                    } else {
-                        freq = null;
-                    }
+                    if (variance < 150) freq = median;
+                    else freq = null;
                 } else {
-                    if (state.pitchHistory.length > 0) {
-                        state.pitchHistory = [];
-                    }
+                    if (state.pitchHistory.length) state.pitchHistory = [];
                     freq = null;
                 }
 
-                // Update UI with detected pitch
-                if (freq && freq > 40 && freq < 2000) {
+                const now = performance.now();
+                if (freq && now - lastUIUpdate > 30) {
+                    lastUIUpdate = now;
                     updateTuner(freq);
-                } else {
-                    // If we had a stable note recently, keep showing it with reduced confidence
-                    if (state.lastValidNote && Date.now() - state.lastValidTime < 500) {
-                        // Keep showing last note but with idle status
-                        updateTuner(state.lastValidFreq, true);
+                } else if (!freq && now - lastUIUpdate > 100) {
+                    lastUIUpdate = now;
+                    if (state.detectedFreq) {
+                        // fade out after 500ms of silence
+                        if (now - state._lastFreqTime > 500) {
+                            resetTunerDisplay();
+                        }
                     } else {
                         resetTunerDisplay();
                     }
+                } else if (freq) {
+                    state._lastFreqTime = now;
                 }
 
                 state.animationId = requestAnimationFrame(processAudio);
             }
 
-            let lastUpdateTime = 0;
-            let lastValidTime = 0;
-
-            function updateTuner(freq, isStale) {
-                const now = Date.now();
-                if (now - lastUpdateTime < 30) return; // throttle to ~30fps for UI
-                lastUpdateTime = now;
-
+            // ============================================================
+            // UPDATE TUNER UI
+            // ============================================================
+            function updateTuner(freq) {
                 state.detectedFreq = freq;
-                state.lastValidFreq = freq;
-                state.lastValidTime = now;
+                state._lastFreqTime = performance.now();
 
                 const note = freqToNote(freq);
-                if (!note) {
-                    resetTunerDisplay();
-                    return;
-                }
+                if (!note) { resetTunerDisplay(); return; }
 
-                state.detectedNote = note;
-
-                // Find closest string in current tuning
                 let stringIdx = -1;
-                let targetFreq = 0;
-                if (state.isChromatic) {
-                    // Chromatic mode: use the detected note's frequency as target
-                    targetFreq = note.freq;
-                    stringIdx = -1;
-                } else {
-                    stringIdx = findClosestString(freq, state.tuning);
-                    if (stringIdx >= 0) {
-                        targetFreq = state.tuning[stringIdx].freq;
-                    } else {
-                        // Fallback: use the note's own frequency
-                        targetFreq = note.freq;
-                        stringIdx = -1;
-                    }
+                let targetFreq = note.freq;
+
+                if (!state.isChromatic) {
+                    stringIdx = closestString(freq, state.tuning);
+                    if (stringIdx >= 0) targetFreq = state.tuning[stringIdx].freq;
                 }
 
                 const cents = centsBetween(freq, targetFreq);
                 state.cents = cents;
                 state.targetFreq = targetFreq;
                 state.targetStringIndex = stringIdx;
-
-                // Determine in-tune status
-                const isInTune = Math.abs(cents) <= 3;
-                state.isInTune = isInTune;
+                state.isInTune = Math.abs(cents) <= 3;
 
                 // Update string status
                 if (stringIdx >= 0 && !state.isChromatic) {
-                    const newStatus = isInTune ? 'in-tune' : (cents < 0 ? 'flat' : 'sharp');
-                    state.stringStatus[stringIdx] = newStatus;
+                    state.stringStatus[stringIdx] = state.isInTune ? 'in-tune' : (cents < 0 ? 'flat' : 'sharp');
                 }
 
-                // Update UI
-                const noteDisplay = note.displayName;
-                const octaveDisplay = note.octave;
-
-                dom.noteName.textContent = noteDisplay;
+                // ---- UI ----
+                dom.noteName.textContent = note.name;
                 dom.noteName.className = 'note-name';
-                if (isInTune) {
-                    dom.noteName.classList.add('in-tune');
-                } else if (cents < -2) {
-                    dom.noteName.classList.add('flat');
-                } else if (cents > 2) {
-                    dom.noteName.classList.add('sharp');
-                } else {
-                    dom.noteName.classList.add('idle');
-                }
+                if (state.isInTune) dom.noteName.classList.add('in-tune');
+                else if (cents < -2) dom.noteName.classList.add('flat');
+                else if (cents > 2) dom.noteName.classList.add('sharp');
+                else dom.noteName.classList.add('idle');
 
-                dom.noteOctave.textContent = octaveDisplay;
+                dom.noteOctave.textContent = note.octave;
                 dom.freqDisplay.textContent = freq.toFixed(1);
 
-                // String label
                 if (stringIdx >= 0 && !state.isChromatic) {
                     const s = state.tuning[stringIdx];
                     dom.stringLabel.textContent = `${s.note}${s.octave}`;
@@ -1651,44 +1439,34 @@
                     dom.stringLabel.textContent = '—';
                 }
 
-                // Cents label
-                const centText = cents > 0 ? `+${cents.toFixed(0)}` : `${cents.toFixed(0)}`;
-                dom.centLabel.textContent = cents !== 0 ? `${centText} ¢` : '0 ¢';
+                // Cents
+                const ct = cents !== 0 ? (cents > 0 ? `+${cents.toFixed(0)}` : `${cents.toFixed(0)}`) : '0';
+                dom.centLabel.textContent = `${ct} ¢`;
                 dom.centLabel.className = 'meter-cent-label';
-                if (isInTune) {
-                    dom.centLabel.classList.add('in-tune');
-                } else if (cents < -1) {
-                    dom.centLabel.classList.add('flat');
-                } else if (cents > 1) {
-                    dom.centLabel.classList.add('sharp');
-                } else {
-                    dom.centLabel.classList.add('idle');
-                }
+                if (state.isInTune) dom.centLabel.classList.add('in-tune');
+                else if (cents < -1) dom.centLabel.classList.add('flat');
+                else if (cents > 1) dom.centLabel.classList.add('sharp');
+                else dom.centLabel.classList.add('idle');
 
                 // Status text
-                const statusEl = dom.statusText;
-                if (isInTune) {
-                    statusEl.textContent = '✨ Perfectly In Tune';
-                    statusEl.className = 'meter-status-text in-tune';
+                const st = dom.statusText;
+                if (state.isInTune) {
+                    st.textContent = '✨ Perfectly In Tune';
+                    st.className = 'meter-status-text in-tune';
                 } else if (cents < -2) {
-                    statusEl.textContent = '⬇️ Flat — Tune Up';
-                    statusEl.className = 'meter-status-text flat';
+                    st.textContent = '⬇️ Flat — Tune Up';
+                    st.className = 'meter-status-text flat';
                 } else if (cents > 2) {
-                    statusEl.textContent = '⬆️ Sharp — Tune Down';
-                    statusEl.className = 'meter-status-text sharp';
+                    st.textContent = '⬆️ Sharp — Tune Down';
+                    st.className = 'meter-status-text sharp';
                 } else {
-                    statusEl.textContent = '🎵 Close — Keep Adjusting';
-                    statusEl.className = 'meter-status-text idle';
+                    st.textContent = '🎵 Close — Keep Adjusting';
+                    st.className = 'meter-status-text idle';
                 }
 
-                // Update meter needle
                 drawMeter(cents);
-
-                // Update string visualization
                 updateStringsVisual(stringIdx, cents);
-
-                // Update reference tones highlighting
-                updateRefTones(stringIdx);
+                updateRefTonesHighlight(stringIdx);
             }
 
             function resetTunerDisplay() {
@@ -1702,29 +1480,23 @@
                 dom.statusText.textContent = 'Waiting for signal...';
                 dom.statusText.className = 'meter-status-text idle';
                 drawMeter(null);
-                // Reset string highlights
-                for (let i = 0; i < 6; i++) {
-                    const row = document.querySelector(`.string-row[data-index="${i}"]`);
-                    if (row) {
-                        row.classList.remove('active', 'in-tune', 'flat', 'sharp');
-                    }
-                }
-                // Reset ref tones
-                document.querySelectorAll('.ref-btn').forEach(btn => {
-                    btn.classList.remove('playing');
+                // reset string rows
+                document.querySelectorAll('.string-row').forEach((row, i) => {
+                    row.classList.remove('active', 'in-tune', 'flat', 'sharp');
+                    const status = row.querySelector('.string-status');
+                    if (status) status.textContent = '—';
                 });
+                document.querySelectorAll('.ref-btn').forEach(b => b.classList.remove('playing'));
+                state.detectedFreq = 0;
             }
 
             // ============================================================
-            //  METER DRAWING (Canvas)
+            // METER CANVAS
             // ============================================================
-
             function drawMeter(cents) {
                 const canvas = dom.meterCanvas;
                 const rect = canvas.parentElement.getBoundingClientRect();
                 const dpr = window.devicePixelRatio || 1;
-
-                // Responsive sizing
                 let w = rect.width || 320;
                 let h = rect.height || 110;
                 if (w < 100) w = 320;
@@ -1738,15 +1510,14 @@
                 const ctx = canvas.getContext('2d');
                 ctx.scale(dpr, dpr);
 
-                const cx = w / 2;
-                const cy = h - 12;
+                const cx = w / 2,
+                    cy = h - 12;
                 const radius = Math.min(w * 0.42, h * 0.7);
-                const needleLen = radius * 0.85;
+                const needleLen = radius * 0.82;
 
-                // Clear
                 ctx.clearRect(0, 0, w, h);
 
-                // Background arc
+                // Arc
                 const grad = ctx.createLinearGradient(0, 0, w, 0);
                 grad.addColorStop(0, '#f87171');
                 grad.addColorStop(0.3, '#fbbf24');
@@ -1762,349 +1533,275 @@
                 ctx.lineCap = 'round';
                 ctx.stroke();
 
-                // Inner tick marks
+                // Ticks
                 for (let i = -5; i <= 5; i++) {
                     const angle = Math.PI * 0.75 + (i / 10) * Math.PI * 0.5;
-                    const inner = radius - 14;
-                    const outer = radius - 4;
-                    const x1 = cx + inner * Math.cos(angle);
-                    const y1 = cy + inner * Math.sin(angle);
-                    const x2 = cx + outer * Math.cos(angle);
-                    const y2 = cy + outer * Math.sin(angle);
+                    const inner = radius - 14,
+                        outer = radius - 4;
                     ctx.beginPath();
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(x2, y2);
-                    ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)';
+                    ctx.moveTo(cx + inner * Math.cos(angle), cy + inner * Math.sin(angle));
+                    ctx.lineTo(cx + outer * Math.cos(angle), cy + outer * Math.sin(angle));
+                    ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)';
                     ctx.lineWidth = i === 0 ? 3 : 1.5;
                     ctx.stroke();
-
-                    // Label every 2
                     if (i % 2 === 0 && i !== 0) {
-                        const labelR = radius + 14;
-                        const lx = cx + labelR * Math.cos(angle);
-                        const ly = cy + labelR * Math.sin(angle);
-                        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+                        const lr = radius + 16;
+                        ctx.fillStyle = 'rgba(255,255,255,0.35)';
                         ctx.font = '10px system-ui, sans-serif';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
-                        ctx.fillText(i * 10, lx, ly);
+                        ctx.fillText(i * 10, cx + lr * Math.cos(angle), cy + lr * Math.sin(angle));
                     }
                 }
 
                 // Center dot
                 ctx.beginPath();
-                ctx.arc(cx, cy, 6, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
                 ctx.fill();
                 ctx.beginPath();
-                ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.arc(cx, cy, 3, 0, 2 * Math.PI);
+                ctx.fillStyle = 'rgba(255,255,255,0.4)';
                 ctx.fill();
 
                 // Needle
                 if (cents !== null && cents !== undefined && !isNaN(cents)) {
                     const clamped = Math.max(-50, Math.min(50, cents));
                     const angle = Math.PI * 0.75 + (clamped / 50) * Math.PI * 0.5;
-
                     const tipX = cx + needleLen * Math.cos(angle);
                     const tipY = cy + needleLen * Math.sin(angle);
 
                     // Glow
-                    const glow = ctx.createRadialGradient(tipX, tipY, 0, tipX, tipY, 20);
-                    const isInTune = Math.abs(cents) <= 3;
-                    if (isInTune) {
-                        glow.addColorStop(0, 'rgba(74, 222, 128, 0.6)');
-                        glow.addColorStop(1, 'rgba(74, 222, 128, 0)');
-                    } else if (cents < 0) {
-                        glow.addColorStop(0, 'rgba(251, 191, 36, 0.4)');
-                        glow.addColorStop(1, 'rgba(251, 191, 36, 0)');
-                    } else {
-                        glow.addColorStop(0, 'rgba(248, 113, 113, 0.4)');
-                        glow.addColorStop(1, 'rgba(248, 113, 113, 0)');
-                    }
+                    const glow = ctx.createRadialGradient(tipX, tipY, 0, tipX, tipY, 22);
+                    const inTune = Math.abs(cents) <= 3;
+                    const col = inTune ? 'rgba(74,222,128,' : (cents < 0 ? 'rgba(251,191,36,' : 'rgba(248,113,113,');
+                    glow.addColorStop(0, col + '0.5)');
+                    glow.addColorStop(1, col + '0)');
                     ctx.beginPath();
-                    ctx.arc(tipX, tipY, 20, 0, Math.PI * 2);
+                    ctx.arc(tipX, tipY, 22, 0, 2 * Math.PI);
                     ctx.fillStyle = glow;
                     ctx.fill();
 
-                    // Needle line
                     ctx.beginPath();
                     ctx.moveTo(cx, cy);
                     ctx.lineTo(tipX, tipY);
-                    ctx.strokeStyle = isInTune ? '#4ade80' : (cents < 0 ? '#fbbf24' : '#f87171');
+                    ctx.strokeStyle = inTune ? '#4ade80' : (cents < 0 ? '#fbbf24' : '#f87171');
                     ctx.lineWidth = 3;
                     ctx.lineCap = 'round';
-                    ctx.shadowColor = isInTune ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255,255,255,0.1)';
+                    ctx.shadowColor = inTune ? 'rgba(74,222,128,0.4)' : 'rgba(255,255,255,0.05)';
                     ctx.shadowBlur = 12;
                     ctx.stroke();
                     ctx.shadowBlur = 0;
 
-                    // Tip circle
                     ctx.beginPath();
-                    ctx.arc(tipX, tipY, 5, 0, Math.PI * 2);
-                    ctx.fillStyle = isInTune ? '#4ade80' : (cents < 0 ? '#fbbf24' : '#f87171');
+                    ctx.arc(tipX, tipY, 5, 0, 2 * Math.PI);
+                    ctx.fillStyle = inTune ? '#4ade80' : (cents < 0 ? '#fbbf24' : '#f87171');
                     ctx.fill();
                 } else {
-                    // Idle needle at center
                     const angle = Math.PI * 0.75 + 0.25 * Math.PI * 0.5;
-                    const tipX = cx + needleLen * 0.3 * Math.cos(angle);
-                    const tipY = cy + needleLen * 0.3 * Math.sin(angle);
+                    const tipX = cx + needleLen * 0.25 * Math.cos(angle);
+                    const tipY = cy + needleLen * 0.25 * Math.sin(angle);
                     ctx.beginPath();
                     ctx.moveTo(cx, cy);
                     ctx.lineTo(tipX, tipY);
-                    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
                     ctx.lineWidth = 2;
-                    ctx.lineCap = 'round';
                     ctx.stroke();
                 }
 
                 // Zero label
-                ctx.fillStyle = 'rgba(255,255,255,0.25)';
+                ctx.fillStyle = 'rgba(255,255,255,0.2)';
                 ctx.font = '9px system-ui, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'top';
-                const zeroAngle = Math.PI * 0.75 + 0.25 * Math.PI * 0.5;
-                const zx = cx + (radius + 20) * Math.cos(zeroAngle);
-                const zy = cy + (radius + 20) * Math.sin(zeroAngle);
-                ctx.fillText('0', zx, zy);
+                const za = Math.PI * 0.75 + 0.25 * Math.PI * 0.5;
+                ctx.fillText('0', cx + (radius + 20) * Math.cos(za), cy + (radius + 20) * Math.sin(za));
             }
 
             // ============================================================
-            //  STRING VISUALIZATION
+            // STRING VISUAL
             // ============================================================
-
             function renderStrings() {
                 const container = dom.stringsVisual;
                 container.innerHTML = '';
-                const tuning = state.tuning;
-                const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
-                const stringLabels = ['Low E', 'A', 'D', 'G', 'B', 'High E'];
-
-                for (let i = 0; i < tuning.length; i++) {
-                    const s = tuning[i];
+                state.tuning.forEach((s, i) => {
                     const row = document.createElement('div');
                     row.className = 'string-row';
                     row.dataset.index = i;
                     row.setAttribute('role', 'listitem');
-
-                    const nameSpan = document.createElement('span');
-                    nameSpan.className = 'string-name';
-                    nameSpan.textContent = `${s.note}${s.octave}`;
-
+                    const name = document.createElement('span');
+                    name.className = 'string-name';
+                    name.textContent = `${s.note}${s.octave}`;
                     const bar = document.createElement('div');
                     bar.className = 'string-bar';
-
-                    const statusSpan = document.createElement('span');
-                    statusSpan.className = 'string-status';
-                    statusSpan.textContent = '—';
-
-                    row.appendChild(nameSpan);
+                    const status = document.createElement('span');
+                    status.className = 'string-status';
+                    status.textContent = '—';
+                    row.appendChild(name);
                     row.appendChild(bar);
-                    row.appendChild(statusSpan);
+                    row.appendChild(status);
                     container.appendChild(row);
-                }
+                });
             }
 
             function updateStringsVisual(activeIdx, cents) {
                 const rows = document.querySelectorAll('.string-row');
-                rows.forEach((row, idx) => {
+                rows.forEach((row, i) => {
                     row.classList.remove('active', 'in-tune', 'flat', 'sharp');
                     const statusEl = row.querySelector('.string-status');
-
-                    if (idx === activeIdx && activeIdx >= 0) {
+                    if (i === activeIdx && activeIdx >= 0 && !state.isChromatic) {
                         row.classList.add('active');
-                        const isInTune = Math.abs(cents) <= 3;
-                        if (isInTune) {
-                            row.classList.add('in-tune');
-                            statusEl.textContent = '✓ In Tune';
-                        } else if (cents < 0) {
-                            row.classList.add('flat');
-                            statusEl.textContent = '♭ Flat';
-                        } else {
-                            row.classList.add('sharp');
-                            statusEl.textContent = '♯ Sharp';
-                        }
+                        const inTune = Math.abs(cents) <= 3;
+                        if (inTune) { row.classList.add('in-tune');
+                            statusEl.textContent = '✓ In Tune'; } else if (cents < 0) { row.classList.add('flat');
+                            statusEl.textContent = '♭ Flat'; } else { row.classList.add('sharp');
+                            statusEl.textContent = '♯ Sharp'; }
                     } else {
-                        // Show previous status if any
-                        const status = state.stringStatus[idx] || 'idle';
-                        if (status === 'in-tune') {
-                            row.classList.add('in-tune');
-                            statusEl.textContent = '✓';
-                        } else if (status === 'flat') {
-                            row.classList.add('flat');
-                            statusEl.textContent = '♭';
-                        } else if (status === 'sharp') {
-                            row.classList.add('sharp');
-                            statusEl.textContent = '♯';
-                        } else {
-                            statusEl.textContent = '—';
-                        }
+                        const st = state.stringStatus[i] || 'idle';
+                        if (st === 'in-tune') { row.classList.add('in-tune');
+                            statusEl.textContent = '✓'; } else if (st === 'flat') { row.classList.add('flat');
+                            statusEl.textContent = '♭'; } else if (st === 'sharp') { row.classList.add('sharp');
+                            statusEl.textContent = '♯'; } else { statusEl.textContent = '—'; }
                     }
                 });
             }
 
             // ============================================================
-            //  REFERENCE TONES
+            // REFERENCE TONES
             // ============================================================
-
             function renderRefTones() {
                 const container = dom.refTones;
                 container.innerHTML = '';
-                const tuning = state.tuning;
+                const stop = document.createElement('button');
+                stop.className = 'ref-btn stop';
+                stop.textContent = '⏹ Stop';
+                stop.dataset.idx = 'stop';
+                stop.addEventListener('click', stopRefTone);
+                container.appendChild(stop);
 
-                // Add a stop button first
-                const stopBtn = document.createElement('button');
-                stopBtn.className = 'ref-btn stop';
-                stopBtn.textContent = '⏹ Stop';
-                stopBtn.dataset.note = 'stop';
-                stopBtn.setAttribute('aria-label', 'Stop all reference tones');
-                stopBtn.addEventListener('click', stopRefTone);
-                container.appendChild(stopBtn);
-
-                tuning.forEach((s, idx) => {
+                state.tuning.forEach((s, i) => {
                     const btn = document.createElement('button');
                     btn.className = 'ref-btn';
                     btn.textContent = `${s.note}${s.octave}`;
-                    btn.dataset.index = idx;
-                    btn.dataset.freq = s.freq;
-                    btn.dataset.note = s.note;
-                    btn.dataset.octave = s.octave;
-                    btn.setAttribute('aria-label', `Play reference tone ${s.note}${s.octave}`);
-                    btn.addEventListener('click', () => playRefTone(idx));
+                    btn.dataset.idx = i;
+                    btn.addEventListener('click', () => playRefTone(i));
                     container.appendChild(btn);
-                });
-            }
-
-            function updateRefTones(activeIdx) {
-                const btns = document.querySelectorAll('.ref-btn');
-                btns.forEach((btn, idx) => {
-                    if (idx === activeIdx + 1) { // +1 because index 0 is stop
-                        btn.classList.add('playing');
-                    } else if (idx !== 0) {
-                        btn.classList.remove('playing');
-                    }
                 });
             }
 
             function playRefTone(idx) {
                 stopRefTone();
-
                 const s = state.tuning[idx];
-                if (!s) return;
-
+                if (!s || !state.audioCtx) return;
                 const ctx = state.audioCtx;
-                if (!ctx) return;
-
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-
                 osc.type = 'sawtooth';
                 osc.frequency.value = s.freq;
-
-                const vol = state.volume || 0.6;
+                const vol = state.volume;
                 gain.gain.setValueAtTime(vol * 0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(vol * 0.2, ctx.currentTime + 0.5);
-
+                gain.gain.exponentialRampToValueAtTime(vol * 0.15, ctx.currentTime + 0.6);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-
                 osc.start(ctx.currentTime);
+                state.refOsc = osc;
+                state.refGain = gain;
+                state.isRefPlaying = true;
 
-                state.refToneOsc = osc;
-                state.refToneGain = gain;
-                state.refTonePlaying = true;
-
-                // Highlight button
+                document.querySelectorAll('.ref-btn').forEach(b => b.classList.remove('playing'));
                 const btns = document.querySelectorAll('.ref-btn');
-                btns.forEach((btn, i) => {
-                    btn.classList.remove('playing');
-                    if (i === idx + 1) btn.classList.add('playing');
-                });
+                if (btns[idx + 1]) btns[idx + 1].classList.add('playing');
 
-                // Auto-stop after 3 seconds
-                if (state.refToneTimeout) clearTimeout(state.refToneTimeout);
-                state.refToneTimeout = setTimeout(() => {
-                    stopRefTone();
-                }, 3000);
+                if (state.refTimeout) clearTimeout(state.refTimeout);
+                state.refTimeout = setTimeout(stopRefTone, 2800);
             }
 
             function stopRefTone() {
-                if (state.refToneOsc) {
-                    try {
-                        state.refToneOsc.stop();
-                        state.refToneOsc.disconnect();
-                    } catch (_) {}
-                    state.refToneOsc = null;
-                }
-                if (state.refToneGain) {
-                    try {
-                        state.refToneGain.disconnect();
-                    } catch (_) {}
-                    state.refToneGain = null;
-                }
-                state.refTonePlaying = false;
-                if (state.refToneTimeout) {
-                    clearTimeout(state.refToneTimeout);
-                    state.refToneTimeout = null;
-                }
-                document.querySelectorAll('.ref-btn').forEach(btn => btn.classList.remove('playing'));
+                if (state.refOsc) { try { state.refOsc.stop();
+                        state.refOsc.disconnect(); } catch (_) { state.refOsc = null; } }
+                if (state.refGain) { try { state.refGain.disconnect(); } catch (_) { state.refGain = null; } }
+                state.isRefPlaying = false;
+                if (state.refTimeout) { clearTimeout(state.refTimeout);
+                    state.refTimeout = null; }
+                document.querySelectorAll('.ref-btn').forEach(b => b.classList.remove('playing'));
+            }
+
+            function updateRefTonesHighlight(activeIdx) {
+                document.querySelectorAll('.ref-btn').forEach((b, i) => {
+                    if (i === activeIdx + 1) b.classList.add('playing');
+                    else if (i !== 0) b.classList.remove('playing');
+                });
             }
 
             // ============================================================
-            //  TUNING MODE SWITCH
+            // TUNING MODE
             // ============================================================
-
             function setTuning(mode) {
                 state.currentTuning = mode;
-                const preset = TUNING_PRESETS[mode];
-                if (preset) {
-                    state.tuning = preset.map(s => ({ ...s }));
-                } else {
-                    state.tuning = STANDARD_TUNING.map(s => ({ ...s }));
-                }
-
-                // Reset string status
+                state.tuning = TUNINGS[mode] ? TUNINGS[mode].map(s => ({ ...s })) : TUNINGS['standard'].map(s => ({ ...s }));
                 state.stringStatus = new Array(6).fill('idle');
                 state.targetStringIndex = -1;
-
-                // Re-render UI
                 renderStrings();
                 renderRefTones();
                 resetTunerDisplay();
-
-                // Update select
                 dom.tuningSelect.value = mode;
-
-                // Update mode buttons
-                document.querySelectorAll('.bottom-controls .btn').forEach(b => {
-                    b.classList.remove('active-mode');
-                });
-                if (mode === 'standard') {
-                    // highlight standard mode? we'll use the tuning select instead
-                }
+                // Update any active mode buttons
+                document.querySelectorAll('.bottom-controls .btn').forEach(b => b.classList.remove('active-mode'));
+                drawMeter(null);
             }
 
             // ============================================================
-            //  THEME TOGGLE
+            // TOGGLES
             // ============================================================
+            function toggleChromatic() {
+                state.isChromatic = !state.isChromatic;
+                dom.chromaticToggle.classList.toggle('active-mode', state.isChromatic);
+                dom.chromaticToggleSwitch.classList.toggle('active', state.isChromatic);
+                dom.chromaticToggleSwitch.setAttribute('aria-checked', state.isChromatic);
+                dom.chromaticLabel.textContent = state.isChromatic ? 'On' : 'Off';
+                state.stringStatus = new Array(6).fill('idle');
+                state.targetStringIndex = -1;
+                resetTunerDisplay();
+                // Re-render strings to clear status
+                renderStrings();
+            }
 
             function toggleTheme() {
                 state.isDark = !state.isDark;
                 document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
-                dom.themeIcon.textContent = state.isDark ? '🌙' : '☀️';
+                dom.themeToggle.textContent = state.isDark ? '🌙' : '☀️';
                 dom.themeLabel.textContent = state.isDark ? 'On' : 'Off';
                 dom.themeToggleSwitch.classList.toggle('active', state.isDark);
                 dom.themeToggleSwitch.setAttribute('aria-checked', state.isDark);
             }
 
-            // ============================================================
-            //  SETTINGS PANEL
-            // ============================================================
+            function toggleBass() {
+                dom.bassToggle.classList.toggle('active-mode');
+                // placeholder
+            }
 
+            function toggleUkulele() {
+                dom.ukuleleToggle.classList.toggle('active-mode');
+            }
+
+            function toggleViolin() {
+                dom.violinToggle.classList.toggle('active-mode');
+            }
+
+            function toggleMetronome() {
+                dom.metronomeToggle.classList.toggle('active-mode');
+                if (dom.metronomeToggle.classList.contains('active-mode')) {
+                    dom.metronomeToggle.textContent = '⏱️ ON';
+                } else {
+                    dom.metronomeToggle.textContent = '⏱️ Metronome';
+                }
+            }
+
+            // ============================================================
+            // SETTINGS MODAL
+            // ============================================================
             function openSettings() {
                 dom.settingsOverlay.classList.add('open');
-                state.settingsOpen = true;
-                // Sync settings UI
                 dom.volSlider.value = state.volume * 100;
                 dom.themeToggleSwitch.classList.toggle('active', state.isDark);
                 dom.themeToggleSwitch.setAttribute('aria-checked', state.isDark);
@@ -2116,101 +1813,36 @@
 
             function closeSettings() {
                 dom.settingsOverlay.classList.remove('open');
-                state.settingsOpen = false;
             }
 
             // ============================================================
-            //  CHROMATIC TOGGLE
+            // RESIZE
             // ============================================================
-
-            function toggleChromatic() {
-                state.isChromatic = !state.isChromatic;
-                dom.chromaticToggle.classList.toggle('active-mode', state.isChromatic);
-                dom.chromaticToggleSwitch.classList.toggle('active', state.isChromatic);
-                dom.chromaticToggleSwitch.setAttribute('aria-checked', state.isChromatic);
-                dom.chromaticLabel.textContent = state.isChromatic ? 'On' : 'Off';
-                // Reset string status when toggling
-                state.stringStatus = new Array(6).fill('idle');
-                state.targetStringIndex = -1;
-                if (!state.isChromatic) {
-                    resetTunerDisplay();
-                }
-            }
-
-            // ============================================================
-            //  INSTRUMENT MODES (placeholder)
-            // ============================================================
-
-            function toggleBass() {
-                state.isBass = !state.isBass;
-                dom.bassToggle.classList.toggle('active-mode', state.isBass);
-                if (state.isBass) {
-                    // Switch to bass tuning (4 strings, lower octave)
-                    // For simplicity, we'll use standard tuning but highlight differently
-                    // In a full implementation, we'd change the tuning preset
-                }
-            }
-
-            function toggleUkulele() {
-                state.isUkulele = !state.isUkulele;
-                dom.ukuleleToggle.classList.toggle('active-mode', state.isUkulele);
-            }
-
-            function toggleViolin() {
-                state.isViolin = !state.isViolin;
-                dom.violinToggle.classList.toggle('active-mode', state.isViolin);
-            }
-
-            function toggleMetronome() {
-                state.isMetronome = !state.isMetronome;
-                dom.metronomeToggle.classList.toggle('active-mode', state.isMetronome);
-                // Metronome implementation would go here
-                // For now, just visual feedback
-                if (state.isMetronome) {
-                    dom.metronomeToggle.textContent = '⏱️ Metronome ON';
-                } else {
-                    dom.metronomeToggle.textContent = '⏱️ Metronome';
-                }
-            }
-
-            // ============================================================
-            //  RESIZE HANDLER
-            // ============================================================
-
             function handleResize() {
-                state.isMobile = window.innerWidth < 640;
-                // Redraw meter
-                if (state.detectedFreq) {
-                    drawMeter(state.cents);
-                } else {
-                    drawMeter(null);
-                }
+                if (state.detectedFreq) drawMeter(state.cents);
+                else drawMeter(null);
             }
 
             // ============================================================
-            //  INIT
+            // INIT
             // ============================================================
-
-            async function init() {
-                // Set initial theme
+            function init() {
+                // Set initial dark mode
                 document.documentElement.setAttribute('data-theme', 'dark');
 
-                // Render initial UI
+                // Render UI
                 setTuning('standard');
 
                 // Event listeners
-                dom.tuningSelect.addEventListener('change', (e) => {
-                    setTuning(e.target.value);
-                });
+                dom.startBtn.addEventListener('click', startAudio);
+
+                dom.tuningSelect.addEventListener('change', (e) => setTuning(e.target.value));
 
                 dom.themeToggle.addEventListener('click', toggleTheme);
-
                 dom.themeToggleSwitch.addEventListener('click', toggleTheme);
                 dom.themeToggleSwitch.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleTheme();
-                    }
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
+                        toggleTheme(); }
                 });
 
                 dom.settingsToggle.addEventListener('click', openSettings);
@@ -2222,10 +1854,8 @@
                 dom.chromaticToggle.addEventListener('click', toggleChromatic);
                 dom.chromaticToggleSwitch.addEventListener('click', toggleChromatic);
                 dom.chromaticToggleSwitch.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleChromatic();
-                    }
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
+                        toggleChromatic(); }
                 });
 
                 dom.bassToggle.addEventListener('click', toggleBass);
@@ -2237,67 +1867,31 @@
                     state.volume = parseFloat(e.target.value) / 100;
                 });
 
+                window.addEventListener('resize', handleResize);
+                setTimeout(handleResize, 100);
+
                 // Keyboard shortcuts
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && state.settingsOpen) {
-                        closeSettings();
-                    }
-                    if (e.key === 'c' || e.key === 'C') {
-                        toggleChromatic();
-                    }
-                    if (e.key === 't' || e.key === 'T') {
-                        toggleTheme();
-                    }
+                    if (e.key === 'Escape' && dom.settingsOverlay.classList.contains('open')) closeSettings();
+                    if (e.key === 'c' || e.key === 'C') toggleChromatic();
+                    if (e.key === 't' || e.key === 'T') toggleTheme();
                 });
 
-                // Resize
-                window.addEventListener('resize', handleResize);
-
-                // Init audio on user interaction
-                const startAudio = async () => {
-                    if (!state.audioCtx || state.audioCtx.state !== 'running') {
-                        const ok = await initAudio();
-                        if (ok) {
-                            processAudio();
-                        }
+                // Auto-start if possible (some browsers allow)
+                setTimeout(() => {
+                    if (!state.isRunning) {
+                        // just show idle
+                        updateMicStatus('idle', 'Click "Start Tuner"');
                     }
-                    // Remove listeners after first interaction
-                    document.removeEventListener('click', startAudio);
-                    document.removeEventListener('touchstart', startAudio);
-                };
+                }, 200);
 
-                document.addEventListener('click', startAudio);
-                document.addEventListener('touchstart', startAudio);
-
-                // Also try immediately (some browsers allow autoplay)
-                setTimeout(async () => {
-                    if (!state.isListening) {
-                        const ok = await initAudio();
-                        if (ok) {
-                            processAudio();
-                        }
-                    }
-                }, 500);
-
-                // Initial meter draw
                 drawMeter(null);
-
-                // Handle visibility change - pause when tab hidden
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden && state.refTonePlaying) {
-                        stopRefTone();
-                    }
-                });
-
-                console.log('🎸 Guitar Tuner initialized');
-                console.log('📐 Meter size:', state.meterWidth, 'x', state.needleLength);
-                console.log('🎵 Tuning:', state.currentTuning);
+                console.log('🎸 Guitar Tuner ready');
             }
 
             // ============================================================
-            //  START
+            // START
             // ============================================================
-
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
